@@ -2,20 +2,23 @@
 var canvas, ctx;
 
 
-// defines the position of the player in the viewport (vX and vY), the number of tiles in the
+// defines the position of the player in the viewport (viewX and viewY), the number of tiles in the
 // viewport (vWidth + 1, vHeight + 1) and the size of the tiles
-var vX, vY, vTileSize;
+var viewX, viewY;
 
 // Declares the players
 var players = [];
+
+// Declares the background
+var backgroundImage;
 
 // Declares the frames per second and the time to use as interval for rendering
 var fps = 60;
 var timeRender = 1 / fps;
 
 // Dimensions in pixels for the world 
-var worldWidth = 300;
-var worldHeight = 1200;
+var worldWidth = 1920;
+var worldHeight = 1080;
 
 
 // When document is ready
@@ -29,25 +32,17 @@ $(document).ready(function() {
     canvas.tabIndex = 0;
     canvas.focus();
 
-    // Set the size of the tiles in the viewport
-    vTileSize = 35;
-
     // Set the size of the canvas.
-    canvas.width = 600;
-    canvas.height = 300;
-
-    // The number of tiles in the viewport depend on the canvas size through the size of each tile
-    // vWidth = Math.floor(canvas.width / vTileSize - 1);
-    // vHeight = Math.floor(canvas.height / vTileSize - 1);
-
+    canvas.width = 1300;
+    canvas.height = 650;
 
     // Set initial position in the viewport
-    vX = 0;
-    vY = 0;
+    viewX = 0;
+    viewY = 0;
 
-    // Push a new player into the array
-    players.push(new Bomber(0, 0, document.getElementById("airplane1"), 100, 5));
-
+    // Push a new player into the players array
+    players.push(new Bomber(0, 0, 60, 30, document.getElementById("airplane1"), 300, 8));
+    backgroundImage = new Background(0, 0, document.getElementById("garden"));
 
     var keyMap = [];
     onkeydown = onkeyup = function(e) {
@@ -63,7 +58,7 @@ $(document).ready(function() {
             players[0].accelerate();
         }
         if (keyMap[37] === true) { // key = left arrow
-            players[0].accelerate();
+            players[0].brake();
         }
 
     }
@@ -75,47 +70,27 @@ $(document).ready(function() {
 
         // Determine the "best" viewport.
         // Ideally the viewport centers the player, if it is too close to the edge correct it to 0
-        console.log(vX + "-" + vY);
-        vX = players[0].x - 0.5 * canvas.width;
-        if (vX < 0) {
-            vX = 0;
+        viewX = players[0].x - 0.5 * canvas.width;
+        if (viewX < 0) {
+            viewX = 0;
         }
-        if (vX + canvas.width > worldWidth) {
-            vX = worldWidth - canvas.width;
+        if (viewX + canvas.width > worldWidth) {
+            viewX = worldWidth - canvas.width;
         }
 
-        vY = players[0].y - canvas.height;
-        if (vY < 0) {
-            vY = 0;
+        viewY = players[0].y - 0.5 * canvas.height;
+        if (viewY < 0) {
+            viewY = 0;
         }
-        if (vY + canvas.height > worldHeight) {
-            vY = worldHeight - canvas.height;
+        if (viewY + canvas.height > worldHeight) {
+            viewY = worldHeight - canvas.height;
         }
 
         // Draws the players after updating speed and position
         players[0].updateSpeed();
         players[0].updatePosition();
-        drawRotatedImage(players[0]);
-    }
-
-    function drawRotatedImage(bomber) {
-
-        // save the current co-ordinate system
-        ctx.save();
-
-        // move to the middle of where we want to draw our image
-        ctx.translate(bomber.x +
-            vTileSize / 2 - vX,
-            bomber.y + vTileSize / 2 - vY);
-
-        // rotate around that point, converting the angle from degrees to radians
-        ctx.rotate(bomber.direction * Math.PI / 180);
-
-        // draw it up and to the left by half the width and height of the image
-        ctx.drawImage(bomber.image, -vTileSize / 2, -vTileSize / 2, vTileSize * 2, vTileSize);
-
-        // Restore the co-ords to how they were before
-        ctx.restore();
+        backgroundImage.draw();
+        players[0].draw();
     }
 
     // Starts rendering the game and keeps going with the given fps
