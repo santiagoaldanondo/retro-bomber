@@ -14,6 +14,7 @@ function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     this.ax = 0;
     this.ay = 0;
     this.bombs = [];
+    this.bullets = [];
 }
 
 // Set the Bomber to inherit from Drawable
@@ -129,4 +130,28 @@ Bomber.prototype.throwBomb = function() {
         this.direction,
         this.speed,
         document.getElementById("bomb")));
+}
+
+Bomber.prototype.shootBullet = function() {
+    var bulletX;
+    var bulletY;
+    if (this.direction >= 0 && this.direction < 90) {
+        bulletX = 2 / 3 * this.width * (1 - this.direction / 90);
+        bulletY = 2 / 3 * this.width * this.direction / 90;
+    } else if (this.direction >= 90 && this.direction < 180) {
+        bulletX = -2 / 3 * this.width * (this.direction - 90) / 90;
+        bulletY = 2 / 3 * this.width * (1 - (this.direction - 90) / 90);
+    } else if (this.direction >= 180 && this.direction < 270) {
+        bulletX = -2 / 3 * this.width * (1 - (this.direction - 180) / 90);
+        bulletY = -2 / 3 * this.width * (this.direction - 180) / 90;
+    } else if (this.direction >= 270 && this.direction < 360) {
+        bulletX = 2 / 3 * this.width * (this.direction - 270) / 90;
+        bulletY = -2 / 3 * this.width * (1 - (this.direction - 270) / 90);
+    }
+    this.bullets.push(new Bullet(this.x + this.width / 3 + bulletX,
+        this.y + this.height / 3 + bulletY,
+        this.width / 5, this.height / 5 * 2 / 3,
+        this.direction,
+        1000,
+        document.getElementById("bullet")));
 }

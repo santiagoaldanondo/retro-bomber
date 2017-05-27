@@ -66,6 +66,9 @@ $(document).ready(function() {
         if (keyMap[66] === true) { // key = left arrow
             players[0].throwBomb();
         }
+        if (keyMap[32] === true) { // key = left arrow
+            players[0].shootBullet();
+        }
 
 
     }
@@ -98,6 +101,9 @@ $(document).ready(function() {
         players[0].draw();
         players[0].bombs.forEach(function(bomb) {
             bomb.draw();
+        }, this);
+        players[0].bullets.forEach(function(bullet) {
+            bullet.draw();
         }, this);
     }
 
