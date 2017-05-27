@@ -13,12 +13,15 @@ var players = [];
 var backgroundImage;
 
 // Declares the frames per second and the time to use as interval for rendering
-var fps = 60;
+var fps = 24;
 var timeRender = 1 / fps;
 
 // Dimensions in pixels for the world 
 var worldWidth = 1920;
 var worldHeight = 1080;
+
+// Defines the gravity
+var gravity = 100;
 
 
 // When document is ready
@@ -41,7 +44,7 @@ $(document).ready(function() {
     viewY = 0;
 
     // Push a new player into the players array
-    players.push(new Bomber(0, 0, 60, 30, document.getElementById("airplane1"), 300, 8));
+    players.push(new Bomber(0, 0, 80, 40, document.getElementById("airplane1"), 300, 300, 6));
     backgroundImage = new Background(0, 0, document.getElementById("garden"));
 
     var keyMap = [];
@@ -60,6 +63,10 @@ $(document).ready(function() {
         if (keyMap[37] === true) { // key = left arrow
             players[0].brake();
         }
+        if (keyMap[66] === true) { // key = left arrow
+            players[0].throwBomb();
+        }
+
 
     }
 
@@ -87,10 +94,11 @@ $(document).ready(function() {
         }
 
         // Draws the players after updating speed and position
-        players[0].updateSpeed();
-        players[0].updatePosition();
         backgroundImage.draw();
         players[0].draw();
+        players[0].bombs.forEach(function(bomb) {
+            bomb.draw();
+        }, this);
     }
 
     // Starts rendering the game and keeps going with the given fps
