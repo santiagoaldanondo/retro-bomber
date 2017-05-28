@@ -10,7 +10,8 @@ function Base(x, y, width, height, image) {
     this.dead = document.getElementById("base1-dead");
     this.alive = true;
     this.damage = 10000;
-    this.life = 200;
+    this.life = 200
+    this.worth = 100;
 }
 
 // Set the Base to inherit from Drawable
@@ -67,12 +68,13 @@ Base.prototype.shootBullet = function() {
         document.getElementById("bullet")));
 }
 
-Base.prototype.collide = function(damageTaken) {
+Base.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
-        this.life -= damageTaken;
+        this.life -= collidedWith.damage;
         if (this.life <= 0) {
             this.alive = false;
             this.image = this.dead;
+            originCollision.score += this.worth;
         }
     }
 }

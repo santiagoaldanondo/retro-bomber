@@ -46,6 +46,7 @@ Bomb.prototype.draw = function() {
 }
 
 // Create new methods for the Bomb class
+
 Bomb.prototype.getSpeed = function() {
     this.speed = Math.pow(Math.pow(this.vx, 2) + Math.pow(this.vy, 2), 0.5);
     return this.speed;
@@ -57,12 +58,14 @@ Bomb.prototype.updatePosition = function() {
         this.y += this.vy * timeRender;
     }
 }
+
 Bomb.prototype.updateSpeed = function() {
     if (this.alive) {
         this.vy += this.ay * timeRender;
         this.getSpeed();
     }
 }
+
 Bomb.prototype.updateDirection = function() {
     if (this.alive) {
         if (this.vx >= 0) {
@@ -73,12 +76,13 @@ Bomb.prototype.updateDirection = function() {
     }
 }
 
-Bomb.prototype.collide = function(damageTaken) {
+Bomb.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
-        this.life -= damageTaken;
+        this.life -= collidedWith.damage;
         if (this.life <= 0) {
             this.alive = false;
             this.image = this.dead;
+            this.damage = 0;
             this.speed = 0;
             this.vx = 0;
             this.vy = 0;
@@ -86,6 +90,7 @@ Bomb.prototype.collide = function(damageTaken) {
             this.ay = 0;
             this.width *= 2;
             this.height *= 3;
+            delete this;
         }
     }
 }

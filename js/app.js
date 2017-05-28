@@ -1,22 +1,9 @@
 // canvas variables
 var canvas, ctx;
 
-
 // defines the position of the player in the viewport (viewX and viewY), the number of tiles in the
 // viewport (vWidth + 1, vHeight + 1) and the size of the tiles
 var viewX, viewY;
-
-// Declares the players
-var players = [];
-
-// Declares the military bases
-var bases = [];
-
-// Declares the bombs
-var bombs = [];
-
-// Declares the bullets
-var bullets = [];
 
 // Declares the background
 var backgroundImage;
@@ -28,10 +15,6 @@ var timeRender = 1 / fps;
 // Dimensions in pixels for the world 
 var worldWidth = 1920;
 var worldHeight = 1080;
-
-// Defines the gravity
-var gravity = 100;
-
 
 // When document is ready
 $(document).ready(function() {
@@ -54,13 +37,24 @@ $(document).ready(function() {
 
     // Assign value to the backgroundImage, and populate players and bases
     backgroundImage = new Background(0, 0, document.getElementById("garden"));
-    players.push(new Bomber(0, 0, 80, 40, document.getElementById("bomber1"), 300, 300, 6));
+    players.push(new Bomber(0, 0, 80, 40, document.getElementById("bomber1"), 600, 600, 6));
     bases.push(new Base(400, 400, 100, 100, document.getElementById("base1")));
 
+    // Create an array to keep the keys that are pressed
     var keyMap = [];
+
+    // Use the onkeydown and onkeup events to modify the values on the keyMap array:
+    // onkeydown turns it true and onkeyup turns it false. Otherwise it is undefined
     onkeydown = onkeyup = function(e) {
         e = e || event; // to deal with IE
         keyMap[e.keyCode] = e.type == 'keydown';
+
+    }
+
+    // Check the values of the keyMap array. It will be called inside the render function.
+    // Calling it inside the onkeydown or onkeyup generated some bugs when pressing multiple keys
+    // and releasing one of them
+    function manageKeys() {
         if (keyMap[38] === true) { // key = up arrow
             players[0].turn(players[0].agility);
         }
@@ -79,11 +73,13 @@ $(document).ready(function() {
         if (keyMap[32] === true) { // key = left arrow
             players[0].shootBullet();
         }
-
-
     }
 
+
     function render() {
+
+        // Call the manageKeys function to run the methods corresponding to every key that is pressed
+        manageKeys();
 
         // Clears the whole viewport
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -106,39 +102,37 @@ $(document).ready(function() {
             viewY = worldHeight - canvas.height;
         }
 
-        // Draws every object and check for collisions
+        // Draws the background
         backgroundImage.draw();
 
+        // Draws every object and check for collisions
         bases.forEach(function(base) {
             base.draw();
             players.forEach(function(player) {
                 player.draw();
                 if (detectCollision(base, player)) {
-                    base.collide(player.damage);
-                    player.collide(base.damage);
+                    base.collide(player, undefined);
+                    player.collide(base, undefined);
                 }
+                player.bombs.forEach(function(bomb, bombKey) {
+                    bomb.draw();
+                    if (detectCollision(base, bomb)) {
+                        base.collide(bomb, player);
+                        bomb.collide(base, undefined);
+                        bomb = null;
+                        player.bombs.splice(bombKey, 1);
+                    }
+                }, this);
+                player.bullets.forEach(function(bullet, bulletKey) {
+                    bullet.draw();
+                    if (detectCollision(base, bullet)) {
+                        base.collide(bullet, player);
+                        bullet.collide(base, undefined);
+                        bullet = null;
+                        player.bullets.splice(bulletKey, 1);
+                    }
+                }, this);
             }, this);
-            bombs.forEach(function(bomb, bombKey) {
-                if (detectCollision(base, bomb)) {
-                    base.collide(bomb.damage);
-                    bomb.collide(base.damage);
-                    setTimeout(function() {
-                        bombs.splice(bombKey, 1);
-                    }, 1000);
-                }
-                bomb.draw();
-            }, this);
-            bullets.forEach(function(bullet, bulletKey) {
-                if (detectCollision(base, bullet)) {
-                    base.collide(bullet.damage);
-                    bullet.collide(base.damage);
-                    setTimeout(function() {
-                        bullets.splice(bulletKey, 1);
-                    }, 1000);
-                }
-                bullet.draw();
-            }, this);
-
         }, this);
     }
 

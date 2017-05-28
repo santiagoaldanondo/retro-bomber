@@ -72,12 +72,13 @@ Bullet.prototype.updateDirection = function() {
         }
     }
 }
-Bullet.prototype.collide = function(damageTaken) {
+Bullet.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
-        this.life -= damageTaken;
+        this.life -= collidedWith.damage;
         if (this.life <= 0) {
             this.alive = false;
             this.image = this.dead;
+            this.damage = 0;
             this.speed = 0;
             this.vx = 0;
             this.vy = 0;
@@ -85,6 +86,7 @@ Bullet.prototype.collide = function(damageTaken) {
             this.ay = 0;
             this.width *= 2;
             this.height *= 5;
+            delete this;
         }
     }
 }

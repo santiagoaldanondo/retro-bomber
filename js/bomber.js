@@ -17,6 +17,9 @@ function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     this.alive = true;
     this.damage = 10000;
     this.life = 200;
+    this.score = 0;
+    this.bombs = [];
+    this.bullets = [];
 }
 
 // Set the Bomber to inherit from Drawable
@@ -52,6 +55,7 @@ Bomber.prototype.draw = function() {
 }
 
 // Create new methods for the Bomber class
+
 Bomber.prototype.setSpeed = function() {
     this.speed = Math.pow(Math.pow(this.vx, 2) + Math.pow(this.vy, 2), 0.5);
     return this.speed;
@@ -63,6 +67,7 @@ Bomber.prototype.updatePosition = function() {
         this.y += this.vy * timeRender;
     }
 }
+
 Bomber.prototype.updateSpeed = function() {
     if (this.alive) {
         this.vx += this.ax * timeRender;
@@ -74,6 +79,7 @@ Bomber.prototype.updateSpeed = function() {
         this.ay = 0;
     }
 }
+
 Bomber.prototype.accelerate = function() {
     if (this.alive) {
         if ((this.setSpeed() >= this.maxSpeed) &&
@@ -85,6 +91,7 @@ Bomber.prototype.accelerate = function() {
         this.ay = this.acceleration * Math.sin(this.direction * Math.PI / 180);
     }
 }
+
 Bomber.prototype.brake = function() {
     if (this.alive) {
         if ((this.setSpeed() >= this.maxSpeed) &&
@@ -123,6 +130,9 @@ Bomber.prototype.throwBomb = function() {
     if (this.alive) {
         var bombX;
         var bombY;
+
+        // The following is required to keep the same relative position of the bomb regardless
+        // the direction of the bomber
         if (this.direction >= 0 && this.direction < 90) {
             bombX = (-1 / 3 * this.width) * (1 - this.direction / 90) - (2 / 3 * this.height * this.direction / 90);
             bombY = (2 / 3 * this.height) * (1 - this.direction / 90) - (1 / 3 * this.width * this.direction / 90);
@@ -136,10 +146,13 @@ Bomber.prototype.throwBomb = function() {
             bombX = (2 / 3 * this.height) * (1 - (this.direction - 270) / 90) - (1 / 3 * this.width * (this.direction - 270) / 90);
             bombY = (1 / 3 * this.width) * (1 - (this.direction - 270) / 90) + (2 / 3 * this.height * (this.direction - 270) / 90);
         }
+
+        // Distance between the origin and the center of the bomber
         bombX -= this.width / 2;
         bombY -= this.height / 2;
 
-        bombs.push(new Bomb(this.x + this.width / 3 + bombX,
+        // Creates a new bullet in the given coordinates
+        this.bombs.push(new Bomb(this.x + this.width / 3 + bombX,
             this.y + this.height / 3 + bombY,
             this.width / 3, this.height / 3,
             this.direction,
@@ -152,6 +165,9 @@ Bomber.prototype.shootBullet = function() {
     if (this.alive) {
         var bulletX;
         var bulletY;
+
+        // The following is required to keep the same relative position of the bullet regardless
+        // the direction of the bomber
         if (this.direction >= 0 && this.direction < 90) {
             bulletX = 2 / 3 * this.width * (1 - this.direction / 90);
             bulletY = 2 / 3 * this.width * this.direction / 90;
@@ -165,9 +181,13 @@ Bomber.prototype.shootBullet = function() {
             bulletX = 2 / 3 * this.width * (this.direction - 270) / 90;
             bulletY = -2 / 3 * this.width * (1 - (this.direction - 270) / 90);
         }
+
+        // Distance between the origin and the center of the bomber
         bulletX -= this.width / 2;
         bulletY -= this.height / 2;
-        bullets.push(new Bullet(this.x + this.width / 3 + bulletX,
+
+        // Creates a new bullet in the given coordinates
+        this.bullets.push(new Bullet(this.x + this.width / 3 + bulletX,
             this.y + this.height / 3 + bulletY,
             this.width / 5, this.height / 5 * 2 / 3,
             this.direction,
@@ -176,9 +196,9 @@ Bomber.prototype.shootBullet = function() {
     }
 }
 
-Bomber.prototype.collide = function(damageTaken) {
+Bomber.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
-        this.life -= damageTaken;
+        this.life -= collidedWith.damage;
         if (this.life <= 0) {
             this.alive = false;
             this.image = this.dead;

@@ -1,3 +1,12 @@
+// Declares the players
+var players = [];
+
+// Declares the military bases
+var bases = [];
+
+// Defines the gravity
+var gravity = 100;
+
 function detectCollision(obj1, obj2) {
     //  x, y, r for obj1
     //  obj2.x, obj2.y for obj2.
