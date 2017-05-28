@@ -9,6 +9,10 @@ function Bomb(x, y, width, height, direction, speed, image) {
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
+    this.dead = document.getElementById("bomb-dead");
+    this.alive = true;
+    this.damage = 100;
+    this.life = 0;
 }
 // Set the Background to inherit from Drawable
 Bomb.prototype = Object.create(Drawable.prototype);
@@ -17,7 +21,7 @@ Bomb.prototype.constructor = Bomb;
 // Overrides the draw method from the parent Drawable
 Bomb.prototype.draw = function() {
 
-    // Updates the spedd and position for the object
+    // Updates the speed and position for the object
     this.updateSpeed();
     this.updatePosition();
     this.updateDirection();
@@ -48,17 +52,40 @@ Bomb.prototype.getSpeed = function() {
 }
 
 Bomb.prototype.updatePosition = function() {
-    this.x += this.vx * timeRender;
-    this.y += this.vy * timeRender;
+    if (this.alive) {
+        this.x += this.vx * timeRender;
+        this.y += this.vy * timeRender;
+    }
 }
 Bomb.prototype.updateSpeed = function() {
-    this.vy += this.ay * timeRender;
-    this.getSpeed();
+    if (this.alive) {
+        this.vy += this.ay * timeRender;
+        this.getSpeed();
+    }
 }
 Bomb.prototype.updateDirection = function() {
-    if (this.vx >= 0) {
-        this.direction = Math.atan(this.vy / this.vx) / Math.PI * 180;
-    } else {
-        this.direction = Math.atan(this.vy / this.vx) / Math.PI * 180 + 180;
+    if (this.alive) {
+        if (this.vx >= 0) {
+            this.direction = Math.atan(this.vy / this.vx) / Math.PI * 180;
+        } else {
+            this.direction = Math.atan(this.vy / this.vx) / Math.PI * 180 + 180;
+        }
+    }
+}
+
+Bomb.prototype.collide = function(damageTaken) {
+    if (this.alive) {
+        this.life -= damageTaken;
+        if (this.life <= 0) {
+            this.alive = false;
+            this.image = this.dead;
+            this.speed = 0;
+            this.vx = 0;
+            this.vy = 0;
+            this.ax = 0;
+            this.ay = 0;
+            this.width *= 2;
+            this.height *= 3;
+        }
     }
 }

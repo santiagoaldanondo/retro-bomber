@@ -9,6 +9,15 @@ var viewX, viewY;
 // Declares the players
 var players = [];
 
+// Declares the military bases
+var bases = [];
+
+// Declares the bombs
+var bombs = [];
+
+// Declares the bullets
+var bullets = [];
+
 // Declares the background
 var backgroundImage;
 
@@ -43,9 +52,10 @@ $(document).ready(function() {
     viewX = 0;
     viewY = 0;
 
-    // Push a new player into the players array
-    players.push(new Bomber(0, 0, 80, 40, document.getElementById("airplane1"), 300, 300, 6));
+    // Assign value to the backgroundImage, and populate players and bases
     backgroundImage = new Background(0, 0, document.getElementById("garden"));
+    players.push(new Bomber(0, 0, 80, 40, document.getElementById("bomber1"), 300, 300, 6));
+    bases.push(new Base(400, 400, 100, 100, document.getElementById("base1")));
 
     var keyMap = [];
     onkeydown = onkeyup = function(e) {
@@ -96,14 +106,39 @@ $(document).ready(function() {
             viewY = worldHeight - canvas.height;
         }
 
-        // Draws the players after updating speed and position
+        // Draws every object and check for collisions
         backgroundImage.draw();
-        players[0].draw();
-        players[0].bombs.forEach(function(bomb) {
-            bomb.draw();
-        }, this);
-        players[0].bullets.forEach(function(bullet) {
-            bullet.draw();
+
+        bases.forEach(function(base) {
+            base.draw();
+            players.forEach(function(player) {
+                player.draw();
+                if (detectCollision(base, player)) {
+                    base.collide(player.damage);
+                    player.collide(base.damage);
+                }
+            }, this);
+            bombs.forEach(function(bomb, bombKey) {
+                if (detectCollision(base, bomb)) {
+                    base.collide(bomb.damage);
+                    bomb.collide(base.damage);
+                    setTimeout(function() {
+                        bombs.splice(bombKey, 1);
+                    }, 1000);
+                }
+                bomb.draw();
+            }, this);
+            bullets.forEach(function(bullet, bulletKey) {
+                if (detectCollision(base, bullet)) {
+                    base.collide(bullet.damage);
+                    bullet.collide(base.damage);
+                    setTimeout(function() {
+                        bullets.splice(bulletKey, 1);
+                    }, 1000);
+                }
+                bullet.draw();
+            }, this);
+
         }, this);
     }
 

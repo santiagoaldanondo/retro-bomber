@@ -1,6 +1,11 @@
-#airplane1,
+#bomber1,
+#bomber1-dead,
+#base1,
+#base1-dead,
 #garden,
 #bomb,
-#bullet {
+#bomb-dead,
+#bullet,
+#bullet-dead {
     display: none;
 }
