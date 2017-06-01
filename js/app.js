@@ -41,13 +41,13 @@ $(document).ready(function() {
     // Assign value to the backgroundImage, and populate players and bases
     backgroundImage = new Background(0, 0, document.getElementById("garden"));
     players.push(new Bomber(40, worldHeight - 20, 80, 40, document.getElementById("bomber1"), 600, 600, 6));
-    bases.push(new Base(400, worldHeight - 100, 100, 100, document.getElementById("base1")));
-    bases.push(new Base(600, worldHeight - 100, 100, 100, document.getElementById("base1")));
-    bases.push(new Base(800, worldHeight - 100, 100, 100, document.getElementById("base1")));
-    bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1")));
-    bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1")));
-    bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1")));
-    bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01));
+    bases.push(new Base(600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+    bases.push(new Base(800, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+    bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.05));
+    bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+    bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+    bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
 
     // Create an array to keep the keys that are pressed
     var keyMap = [];
@@ -118,9 +118,14 @@ $(document).ready(function() {
         // Draws the background
         backgroundImage.draw();
 
-        // Check for collisions for each base
+        // Check for collisions for each base (between a base and a player's projectiles)
+        // It also checks collisions between the base and the players
         bases.forEach(function(base) {
-            base.shootBullet();
+
+            // Shoot if the base is alive with its shooting pace
+            if (base.alive && Math.random() < base.shootingPace){
+                base.shootBullet();
+            }
 
             players.forEach(function(player) {
                 if (detectCollision(base, player)) {
@@ -128,11 +133,7 @@ $(document).ready(function() {
                     player.collide(base, undefined);
                 }
                 player.bombs.forEach(function(bomb, bombKey) {
-                    if (isOutOfBorders(bomb)) {
-                        bomb.collide(base, undefined);
-                        bomb = null;
-                        player.bombs.splice(bombKey, 1);
-                    } else if (detectCollision(base, bomb)) {
+                    if (detectCollision(base, bomb)) {
                         base.collide(bomb, player);
                         bomb.collide(base, undefined);
                         bomb = null;
@@ -141,11 +142,7 @@ $(document).ready(function() {
 
                 }, this);
                 player.bullets.forEach(function(bullet, bulletKey) {
-                    if (isOutOfBorders(bullet)) {
-                        bullet.collide(base, undefined);
-                        bullet = null;
-                        player.bullets.splice(bulletKey, 1);
-                    } else if (detectCollision(base, bullet) || isOutOfBorders(bullet)) {
+                    if (detectCollision(base, bullet)) {
                         base.collide(bullet, player);
                         bullet.collide(base, undefined);
                         bullet = null;
@@ -155,24 +152,72 @@ $(document).ready(function() {
             }, this);
         }, this);
 
-        // Draws every object
+        // Check for collisions for each player (between a base and a base's projectiles)
+        players.forEach(function(player) {
+            bases.forEach(function(base) {
+                base.bombs.forEach(function(bomb, bombKey) {
+                    if (detectCollision(player, bomb)) {
+                        player.collide(bomb, base);
+                        bomb.collide(player, undefined);
+                        bomb = null;
+                        base.bombs.splice(bombKey, 1);
+                    }
+
+                }, this);
+                base.bullets.forEach(function(bullet, bulletKey) {
+                    if (detectCollision(player, bullet)) {
+                        player.collide(bullet, base);
+                        bullet.collide(player, undefined);
+                        bullet = null;
+                        base.bullets.splice(bulletKey, 1);
+                    }
+                }, this);
+            }, this);
+        }, this);
+
+
+        // Draws every object and remove out of bounds projectiles
         bases.forEach(function(base) {
             base.draw();
-            base.bombs.forEach(function(bomb) {
-                bomb.draw();
+            base.bombs.forEach(function(bomb, bombKey) {
+                if (isOutOfBorders(bomb)) {
+                    bomb.collide(base, undefined);
+                    bomb = null;
+                    base.bombs.splice(bombKey, 1);
+                } else {
+                    bomb.draw();
+                }
             }, this);
-            base.bullets.forEach(function(bullet) {
-                bullet.draw();
+            base.bullets.forEach(function(bullet, bulletKey) {
+                if (isOutOfBorders(bullet)) {
+                    bullet.collide(base, undefined);
+                    bullet = null;
+                    base.bullets.splice(bulletKey, 1);
+                } else {
+                    bullet.draw();
+                }
             }, this);
         }, this);
 
         players.forEach(function(player) {
             player.draw();
-            player.bombs.forEach(function(bomb) {
-                bomb.draw();
+            player.bombs.forEach(function(bomb, bombKey) {
+                if (isOutOfBorders(bomb)) {
+                    bomb.collide(player, undefined);
+                    bomb = null;
+                    player.bombs.splice(bombKey, 1);
+                } else {
+                    bomb.draw();
+                }
             }, this);
-            player.bullets.forEach(function(bullet) {
-                bullet.draw();
+            player.bullets.forEach(function(bullet, bulletKey) {
+                if (isOutOfBorders(bullet)) {
+                    bullet.collide(player, undefined);
+                    bullet = null;
+                    player.bullets.splice(bulletKey, 1);
+                } else {
+                    bullet.draw();
+                }
             }, this);
         }, this);
 

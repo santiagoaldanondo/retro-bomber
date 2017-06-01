@@ -2,11 +2,12 @@
 /*global Drawable Bullet players ctx viewX viewY:true*/
 
 // Create the class Base, that will inherit from the class Drawable
-function Base(x, y, width, height, image) {
+function Base(x, y, width, height, image, shootingPace) {
     Drawable.call(this, x, y);
     this.width = width;
     this.height = height;
     this.image = image;
+    this.shootingPace = shootingPace;
     this.bombs = [];
     this.bullets = [];
     this.direction = 0;
@@ -50,16 +51,22 @@ Base.prototype.draw = function() {
 Base.prototype.directBullet = function(player) {
     var distanceX = player.x - this.x;
     var distanceY = player.y - this.y;
-    return Math.atan(distanceY/distanceX)/ Math.PI * 180;
+    var bulletDirection;
+    if (distanceX >= 0) {
+        bulletDirection = Math.atan(distanceY/distanceX) / Math.PI * 180;
+    } else {
+        bulletDirection = Math.atan(distanceY/distanceX) / Math.PI * 180 + 180;
+    }
+    return bulletDirection;
 }
 
 Base.prototype.shootBullet = function() {
     this.bullets.push(new Bullet(this.x,
         this.y,
-        this.width / 5, this.height / 5 * 2 / 3,
+        this.width / 4, this.height / 10,
         this.directBullet(players[0]),
         500,
-        document.getElementById("bullet")));
+        document.getElementById("missile1")));
 }
 
 Base.prototype.collide = function(collidedWith, originCollision) {
