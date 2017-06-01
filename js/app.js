@@ -1,3 +1,6 @@
+// Declare global variables to avoid no-undef errors from Eslint:
+/*global Background Bomber Base players bases detectCollision:true*/
+
 // canvas variables
 var canvas, ctx;
 
@@ -12,7 +15,7 @@ var backgroundImage;
 var fps = 24;
 var timeRender = 1 / fps;
 
-// Dimensions in pixels for the world 
+// Dimensions in pixels for the world
 var worldWidth = 1920;
 var worldHeight = 1080;
 
@@ -37,17 +40,24 @@ $(document).ready(function() {
 
     // Assign value to the backgroundImage, and populate players and bases
     backgroundImage = new Background(0, 0, document.getElementById("garden"));
-    players.push(new Bomber(0, 0, 80, 40, document.getElementById("bomber1"), 600, 600, 6));
-    bases.push(new Base(400, 400, 100, 100, document.getElementById("base1")));
+    players.push(new Bomber(40, worldHeight - 20, 80, 40, document.getElementById("bomber1"), 600, 600, 6));
+    bases.push(new Base(400, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(600, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(800, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1")));
+    bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1")));
 
     // Create an array to keep the keys that are pressed
     var keyMap = [];
 
     // Use the onkeydown and onkeup events to modify the values on the keyMap array:
     // onkeydown turns it true and onkeyup turns it false. Otherwise it is undefined
-    onkeydown = onkeyup = function(e) {
+
+    window.onkeydown = window.onkeyup = function(e) {
         e = e || event; // to deal with IE
-        keyMap[e.keyCode] = e.type == 'keydown';
+        keyMap[e.keyCode] = e.type == "keydown";
 
     }
 
@@ -75,6 +85,9 @@ $(document).ready(function() {
         }
     }
 
+    function isOutOfBorders(object) {
+        return object.x < 0 || object.y < 0 || object.x > worldWidth || object.y > worldHeight;
+    }
 
     function render() {
 
@@ -105,27 +118,34 @@ $(document).ready(function() {
         // Draws the background
         backgroundImage.draw();
 
-        // Draws every object and check for collisions
+        // Check for collisions for each base
         bases.forEach(function(base) {
-            base.draw();
+            base.shootBullet();
+
             players.forEach(function(player) {
-                player.draw();
                 if (detectCollision(base, player)) {
                     base.collide(player, undefined);
                     player.collide(base, undefined);
                 }
                 player.bombs.forEach(function(bomb, bombKey) {
-                    bomb.draw();
-                    if (detectCollision(base, bomb)) {
+                    if (isOutOfBorders(bomb)) {
+                        bomb.collide(base, undefined);
+                        bomb = null;
+                        player.bombs.splice(bombKey, 1);
+                    } else if (detectCollision(base, bomb)) {
                         base.collide(bomb, player);
                         bomb.collide(base, undefined);
                         bomb = null;
                         player.bombs.splice(bombKey, 1);
                     }
+
                 }, this);
                 player.bullets.forEach(function(bullet, bulletKey) {
-                    bullet.draw();
-                    if (detectCollision(base, bullet)) {
+                    if (isOutOfBorders(bullet)) {
+                        bullet.collide(base, undefined);
+                        bullet = null;
+                        player.bullets.splice(bulletKey, 1);
+                    } else if (detectCollision(base, bullet) || isOutOfBorders(bullet)) {
                         base.collide(bullet, player);
                         bullet.collide(base, undefined);
                         bullet = null;
@@ -134,6 +154,28 @@ $(document).ready(function() {
                 }, this);
             }, this);
         }, this);
+
+        // Draws every object
+        bases.forEach(function(base) {
+            base.draw();
+            base.bombs.forEach(function(bomb) {
+                bomb.draw();
+            }, this);
+            base.bullets.forEach(function(bullet) {
+                bullet.draw();
+            }, this);
+        }, this);
+
+        players.forEach(function(player) {
+            player.draw();
+            player.bombs.forEach(function(bomb) {
+                bomb.draw();
+            }, this);
+            player.bullets.forEach(function(bullet) {
+                bullet.draw();
+            }, this);
+        }, this);
+
     }
 
     // Starts rendering the game and keeps going with the given fps

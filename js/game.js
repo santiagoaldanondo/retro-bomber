@@ -1,3 +1,6 @@
+// Declare global variables to avoid no-undef errors from Eslint:
+/*global players bases gravity detectCollision ctx:true*/
+
 // Declares the players
 var players = [];
 
@@ -19,7 +22,7 @@ function detectCollision(obj1, obj2) {
     // transform to obj1's location and rotation
     ctx.setTransform(xdx, xdy, -xdy, xdx, obj1.x, obj1.y);
 
-    // create inverted matrix for obj1 
+    // create inverted matrix for obj1
     // Only invert obj1 matrix once per frame
 
     var d = xdx * xdx + xdy * xdy;
@@ -42,5 +45,4 @@ function detectCollision(obj1, obj2) {
         return true;
     }
     return false;
-
 }

@@ -17,6 +17,7 @@ Retro bomber is a 2D game built with Javascript and Jquery. It uses a canvas to 
 * The render function is used to run all that is required:
  * Check the keys that are pressed to run the corresponding methods
  * Check all the possible collision between objects.
+ * Remove all the ammunition that is off screen in order to free memory space.
  * Draw all the objects.
 
 
@@ -35,7 +36,7 @@ Use the following keys to play this game:
 
 ## Next steps
 
-* Create floor, walls and ceiling. ?? Maybe in the background object
+* DONE: Create floor, walls and ceiling. ?? Maybe in the background object
 * ?? Check collision of bombs and bullets with bomber.
 * Create score, put it on the screen and update it.
 * ?? Create a small canvas to show the current viewport position in the whole map.

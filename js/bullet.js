@@ -1,3 +1,6 @@
+// Declare global variables to avoid no-undef errors from Eslint:
+/*global Drawable gravity ctx viewX viewY timeRender:true*/
+
 function Bullet(x, y, width, height, direction, speed, image) {
     Drawable.call(this, x, y);
     this.width = width;
@@ -29,7 +32,7 @@ Bullet.prototype.draw = function() {
     // save the current co-ordinate system
     ctx.save();
 
-    // move to the middle of where we want to draw our image. We have to substract the distances 
+    // move to the middle of where we want to draw our image. We have to substract the distances
     // of the viewport (viewX and viewY)
     ctx.translate(this.x +
         this.width / 2 - viewX,

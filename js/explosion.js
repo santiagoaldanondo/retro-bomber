@@ -1,5 +1,5 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Drawable Bullet players ctx viewX viewY:true*/
+/*global Drawable Bullet ctx viewX viewY:true*/
 
 // Create the class Base, that will inherit from the class Drawable
 function Base(x, y, width, height, image) {
@@ -47,18 +47,27 @@ Base.prototype.draw = function() {
 
 // Create new methods for the Base class
 
-Base.prototype.directBullet = function(player) {
-    var distanceX = player.x - this.x;
-    var distanceY = player.y - this.y;
-    return Math.atan(distanceY/distanceX)/ Math.PI * 180;
-}
-
 Base.prototype.shootBullet = function() {
-    this.bullets.push(new Bullet(this.x,
-        this.y,
+    var bulletX;
+    var bulletY;
+    if (this.direction >= 0 && this.direction < 90) {
+        bulletX = 2 / 3 * this.width * (1 - this.direction / 90);
+        bulletY = 2 / 3 * this.width * this.direction / 90;
+    } else if (this.direction >= 90 && this.direction < 180) {
+        bulletX = -2 / 3 * this.width * (this.direction - 90) / 90;
+        bulletY = 2 / 3 * this.width * (1 - (this.direction - 90) / 90);
+    } else if (this.direction >= 180 && this.direction < 270) {
+        bulletX = -2 / 3 * this.width * (1 - (this.direction - 180) / 90);
+        bulletY = -2 / 3 * this.width * (this.direction - 180) / 90;
+    } else if (this.direction >= 270 && this.direction < 360) {
+        bulletX = 2 / 3 * this.width * (this.direction - 270) / 90;
+        bulletY = -2 / 3 * this.width * (1 - (this.direction - 270) / 90);
+    }
+    this.bullets.push(new Bullet(this.x + this.width / 3 + bulletX,
+        this.y + this.height / 3 + bulletY,
         this.width / 5, this.height / 5 * 2 / 3,
-        this.directBullet(players[0]),
-        500,
+        this.direction,
+        1000,
         document.getElementById("bullet")));
 }
 

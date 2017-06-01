@@ -1,3 +1,6 @@
+// Declare global variables to avoid no-undef errors from Eslint:
+/*global Drawable Bomb Bullet ctx viewX viewY timeRender:true*/
+
 // Create the class Bomber, that will inherit from the class Drawable
 function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     Drawable.call(this, x, y);
@@ -111,7 +114,7 @@ Bomber.prototype.turn = function(angle) {
         // Set direction between 0 and 360 degrees (360 is not included)
         this.direction = (this.direction + 360) % 360;
 
-        // Gets the current speed to project it with the new angle 
+        // Gets the current speed to project it with the new angle
         this.setSpeed();
 
         // Checks if the plane is going forward or backward in order to give a sign to the speed vx and vy
