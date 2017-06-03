@@ -13,19 +13,30 @@
 
 <body>
 
-    <!-- Create all the images used in the canvas-->
+    <!-- Create all the images used in the canvas. All these images are hidden-->
     <img id="bomber1" src="img/bomber1.png" alt="bomber1" />
     <img id="bomber1-dead" src="img/bomber1-dead.png" alt="bomber1-dead" />
     <img id="base1" src="img/base1.png" alt="base1" />
     <img id="base1-dead" src="img/base1-dead.png" alt="base1-dead" />
     <img id="bomb" src="img/bomb.png" alt="bomb" />
-    <img id="bomb-dead" src="img/bomb-dead.png" alt="bomb-dead" />
+    <img id="bomb-explosion" src="img/bomb-explosion.png" alt="bomb-explosion" />
     <img id="missile1" src="img/missile1.png" alt="missile1" />
     <img id="bullet" src="img/bullet.png" alt="bullet" />
-    <img id="bullet-dead" src="img/bullet-dead.png" alt="bullet-dead" />
+    <img id="bullet-explosion" src="img/bullet-explosion.png" alt="bullet-explosion" />
     <img id="garden" src="img/garden.jpg" alt="garden" />
 
-    <canvas id="canvas"></canvas>
+    <div id="main-container">
+    	<div id="upper">
+			<div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
+			<div class="board" id="health">HEALTH: 
+                <progress id="health-value" value="100" max="100"></progress>
+            </div>
+			<div class="board" id="score">SCORE: <span id="score-value"></span></div>
+		</div>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <!--Scripts-->
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/drawable.js"></script>
@@ -34,6 +45,7 @@
     <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/bomb.js"></script>
     <script type="text/javascript" src="js/bullet.js"></script>
+    <script type="text/javascript" src="js/explosion.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 
 </body>

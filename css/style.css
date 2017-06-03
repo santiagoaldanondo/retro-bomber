@@ -5,8 +5,29 @@
 #missile1,
 #garden,
 #bomb,
-#bomb-dead,
+#bomb-explosion,
 #bullet,
-#bullet-dead {
+#bullet-explosion {
     display: none;
+}
+
+#main-container {
+    text-align: center;
+    position: relative;
+}
+
+#upper {
+    width: 90%;
+    position: absolute;
+    z-index: 1;
+    margin: 30px 4%;
+    text-align: left;
+}
+
+#canvas {
+    margin: 20px auto 0 auto;
+}
+
+#lives {
+    float: right;
 }

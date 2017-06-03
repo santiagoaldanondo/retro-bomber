@@ -4,6 +4,8 @@
 // Create the class Bomber, that will inherit from the class Drawable
 function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     Drawable.call(this, x, y);
+    this.initialX = this.x;
+    this.initialY = this.y;
     this.width = width;
     this.height = height;
     this.image = image;
@@ -19,7 +21,9 @@ function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     this.dead = document.getElementById("bomber1-dead");
     this.alive = true;
     this.damage = 10000;
-    this.life = 200;
+    this.health = 400;
+    this.maxHealth = this.health;
+    this.numOfLives = 3;
     this.score = 0;
     this.bombs = [];
     this.bullets = [];
@@ -201,10 +205,11 @@ Bomber.prototype.shootBullet = function() {
 
 Bomber.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
-        this.life -= collidedWith.damage;
-        if (this.life <= 0) {
+        this.health -= collidedWith.damage;
+        if (this.health <= 0) {
             this.alive = false;
             this.image = this.dead;
+            this.numOfLives -= 1;
             this.speed = 0;
             this.vx = 0;
             this.vy = 0;

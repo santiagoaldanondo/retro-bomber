@@ -32,23 +32,26 @@ Use the following keys to play this game:
 * Space key: shoot bullet
 
 ## Bugs
-4. Need to show the explosion of the bullets and bombs when they collide.
+
 
 ## Next steps
 
 * DONE: Create floor, walls and ceiling. ?? Maybe in the background object
 * DONE: Check collision of bombs and bullets with bomber.
-* Create score, put it on the screen and update it.
+* DONE: Create score, health and number of lives, put it on the screen and update it.
 * ?? Create a small canvas to show the current viewport position in the whole map.
-* Refactorize classes, inheritance and methods. Maybe use functional programming.
+* ?? Refactorize classes, inheritance and methods. Maybe use functional programming.
 * Create models for different bombers, bases, bombs and bullets.
 * Create an html page to chose the models.
 * Create levels with different backgrounds and modify methods to make it more difficult.
 * Add sounds.
-* Add transitions to collisions.
+* DONE: Add transitions to collisions.
 * Add gravity to Bomber.
 * Forbid going backwards or otherwise change the bullets and bombs' direction.
 * Add friction and lift forces
+* Show the number of lives with a number of images instead of a number. 
+* Change the css of the board.
+* Use browser cache to save information.
 
 ## Fixed bugs
 
@@ -57,5 +60,7 @@ Use the following keys to play this game:
 2. Fix the deletion of bullets and bombs after collision. Right now when the setTimeout is finished, it removes all the bullets after the one that collided. __--> Deleted the setTimeOut, so the element (bullet or bomb) is removed from its array as soon as it collides. However I need to find a way to show the explosion for a couple of seconds.__
 
 3. Fix the collision to allow only one collision bewteen two objects. Right now one bullet will collide several times with an enemy. __--> Fixed by removing the element (bomb or bullet) from the array as soon as it collides. The problem is that I need to create an explosion object outside from bullets and bombs instead of using a dead image.__
+
+4. Need to show the explosion of the bullets and bombs when they collide. __--> Fixed by creating an Explosion class. When a projectile collides, a new explosion is created. The explosions have a lifetime after which they are deleted.__
 
 

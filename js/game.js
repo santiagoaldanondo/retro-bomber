@@ -7,6 +7,9 @@ var players = [];
 // Declares the military bases
 var bases = [];
 
+// Declares the explosions
+var explosions = [];
+
 // Defines the gravity
 var gravity = 100;
 
