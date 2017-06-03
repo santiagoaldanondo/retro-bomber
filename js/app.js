@@ -1,5 +1,30 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Background Bomber Base Explosion explosions players bases detectCollision:true*/
+/*global ion Background Bomber Base Explosion explosions players bases detectCollision:true*/
+
+//Initialize ion library, include sounds and set multiplay to true (so it can play multiple sounds at the same time)
+ion.sound({
+    sounds: [
+        {
+            name: "bomb-explode",
+            volume: 0.3
+        },
+        {
+            name: "base-explode",
+            volume: 0.5
+        },
+        {
+            name: "bullet-shot",
+            volume: 0.2
+        },
+        {
+            name: "missile-shot",
+            volume: 0.2
+        },
+    ],
+    path: "audios/",
+    multiplay: true,
+    preload: true
+});
 
 // canvas variables
 var canvas, ctx;
@@ -195,6 +220,9 @@ $(document).ready(function() {
                 }
                 player.bombs.forEach(function(bomb, bombKey) {
                     if (detectCollision(base, bomb)) {
+                        // Play sound
+                        ion.sound.play("bomb-explode");
+
                         base.collide(bomb, player);
                         bomb.collide(base, undefined);
                         explosions.unshift(new Explosion(bomb.x,
@@ -233,6 +261,10 @@ $(document).ready(function() {
             bases.forEach(function(base) {
                 base.bombs.forEach(function(bomb, bombKey) {
                     if (detectCollision(player, bomb)) {
+
+                        // Play sound
+                        ion.sound.play("bomb-explode");
+
                         player.collide(bomb, base);
                         bomb.collide(player, undefined);
                         bomb = null;

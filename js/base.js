@@ -1,5 +1,5 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Drawable Bullet players ctx viewX viewY:true*/
+/*global Drawable Bullet players ctx viewX viewY ion:true*/
 
 // Create the class Base, that will inherit from the class Drawable
 function Base(x, y, width, height, image, shootingPace) {
@@ -61,6 +61,10 @@ Base.prototype.directBullet = function(player) {
 }
 
 Base.prototype.shootBullet = function() {
+
+    // Play sound
+    ion.sound.play("missile-shot");
+
     this.bullets.push(new Bullet(this.x,
         this.y,
         this.width / 4, this.height / 10,
@@ -73,6 +77,10 @@ Base.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
         this.life -= collidedWith.damage;
         if (this.life <= 0) {
+
+            // Play sound
+            ion.sound.play("base-explode");
+
             this.alive = false;
             this.image = this.dead;
             originCollision.score += this.worth;

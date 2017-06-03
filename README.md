@@ -44,10 +44,10 @@ Use the following keys to play this game:
 * Create models for different bombers, bases, bombs and bullets.
 * Create an html page to chose the models.
 * Create levels with different backgrounds and modify methods to make it more difficult.
-* Add sounds.
+* DONE: Add sounds.
 * DONE: Add transitions to collisions.
 * Add gravity to Bomber.
-* Forbid going backwards or otherwise change the bullets and bombs' direction.
+* DONE: Forbid going backwards or otherwise change the bullets and bombs' direction.
 * Add friction and lift forces
 * Show the number of lives with a number of images instead of a number. 
 * Change the css of the board.

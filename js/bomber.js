@@ -1,5 +1,5 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Drawable Bomb Bullet ctx viewX viewY timeRender:true*/
+/*global Drawable Bomb Bullet ctx viewX viewY timeRender ion:true*/
 
 // Create the class Bomber, that will inherit from the class Drawable
 function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
@@ -101,13 +101,17 @@ Bomber.prototype.accelerate = function() {
 
 Bomber.prototype.brake = function() {
     if (this.alive) {
-        if ((this.setSpeed() >= this.maxSpeed) &&
-            !(this.vx * Math.cos((this.direction) * Math.PI / 180) > 0 ||
+        if (!(this.vx * Math.cos((this.direction) * Math.PI / 180) > 0 ||
                 this.vy * Math.sin((this.direction) * Math.PI / 180) > 0)) {
+            this.vx = 0;
+            this.vy = 0;
             return;
+        } else if (this.setSpeed() < 0.2 *this.maxSpeed) {
+            return;
+        } else {
+            this.ax = -this.acceleration * Math.cos(this.direction * Math.PI / 180);
+            this.ay = -this.acceleration * Math.sin(this.direction * Math.PI / 180);
         }
-        this.ax = -this.acceleration * Math.cos(this.direction * Math.PI / 180);
-        this.ay = -this.acceleration * Math.sin(this.direction * Math.PI / 180);
     }
 }
 
@@ -194,6 +198,9 @@ Bomber.prototype.shootBullet = function() {
         bulletY -= this.height / 2;
 
         // Creates a new bullet in the given coordinates
+
+        // Play sound
+        ion.sound.play("bullet-shot");
         this.bullets.push(new Bullet(this.x + this.width / 3 + bulletX,
             this.y + this.height / 3 + bulletY,
             this.width / 5, this.height / 5 * 2 / 3,
@@ -208,6 +215,11 @@ Bomber.prototype.collide = function(collidedWith, originCollision) {
         this.health -= collidedWith.damage;
         if (this.health <= 0) {
             this.alive = false;
+
+            // Correct width and height due to different sizes of dead and alive images
+            this.width *= (this.dead.naturalWidth/this.image.naturalWidth);
+            this.height *= (this.dead.naturalHeight/this.image.naturalHeight);
+
             this.image = this.dead;
             this.numOfLives -= 1;
             this.speed = 0;
