@@ -33,6 +33,8 @@ Use the following keys to play this game:
 
 ## Bugs
 
+5. Explosions are very small now
+
 
 ## Next steps
 
@@ -41,17 +43,18 @@ Use the following keys to play this game:
 * DONE: Create score, health and number of lives, put it on the screen and update it.
 * ?? Create a small canvas to show the current viewport position in the whole map.
 * ?? Refactorize classes, inheritance and methods. Maybe use functional programming.
-* Create models for different bombers, bases, bombs and bullets.
-* Create an html page to chose the models.
+* DONE: Create models for different bombers, bases, bombs and bullets.
+* Create an html page to choose the models.
 * Create levels with different backgrounds and modify methods to make it more difficult.
 * DONE: Add sounds.
 * DONE: Add transitions to collisions.
 * Add gravity to Bomber.
 * DONE: Forbid going backwards or otherwise change the bullets and bombs' direction.
-* Add friction and lift forces
+* NO: Add friction and lift forces
 * Show the number of lives with a number of images instead of a number. 
 * Change the css of the board.
 * Use browser cache to save information.
+* Create a bonus object that gives random prizes to the player.
 
 ## Fixed bugs
 

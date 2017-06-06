@@ -2,13 +2,14 @@
 /*global Drawable Bomb Bullet ctx viewX viewY timeRender ion:true*/
 
 // Create the class Bomber, that will inherit from the class Drawable
-function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
+function Bomber(x, y, width, height, imageLive, imageDead, acceleration, maxSpeed, agility, bombType, bulletType) {
     Drawable.call(this, x, y);
     this.initialX = this.x;
     this.initialY = this.y;
+    this.imageLive = imageLive;
+    this.imageDead = imageDead;
     this.width = width;
     this.height = height;
-    this.image = image;
     this.acceleration = acceleration;
     this.maxSpeed = maxSpeed;
     this.agility = agility;
@@ -18,7 +19,6 @@ function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     this.vy = 0;
     this.ax = 0;
     this.ay = 0;
-    this.dead = document.getElementById("bomber1-dead");
     this.alive = true;
     this.damage = 10000;
     this.health = 400;
@@ -27,6 +27,9 @@ function Bomber(x, y, width, height, image, acceleration, maxSpeed, agility) {
     this.score = 0;
     this.bombs = [];
     this.bullets = [];
+    this.numOfBombs = 1000;
+    this.bombType = bombType;
+    this.bulletType = bulletType;
 }
 
 // Set the Bomber to inherit from Drawable
@@ -55,7 +58,7 @@ Bomber.prototype.draw = function() {
 
     ctx.setTransform(xdx, xdy, -xdy, xdx, this.x - viewX, this.y - viewY);
 
-    ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
+    ctx.drawImage(this.imageLive, -this.width / 2, -this.height / 2, this.width, this.height);
 
     // reset the transform
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -106,7 +109,7 @@ Bomber.prototype.brake = function() {
             this.vx = 0;
             this.vy = 0;
             return;
-        } else if (this.setSpeed() < 0.2 *this.maxSpeed) {
+        } else if (this.setSpeed() < 0.2 * this.maxSpeed) {
             return;
         } else {
             this.ax = -this.acceleration * Math.cos(this.direction * Math.PI / 180);
@@ -138,7 +141,8 @@ Bomber.prototype.turn = function(angle) {
 }
 
 Bomber.prototype.throwBomb = function() {
-    if (this.alive) {
+    if (this.alive && this.numOfBombs > 0) {
+        this.numOfBombs--;
         var bombX;
         var bombY;
 
@@ -168,7 +172,7 @@ Bomber.prototype.throwBomb = function() {
             this.width / 3, this.height / 3,
             this.direction,
             this.speed,
-            document.getElementById("bomb")));
+            this.bombType));
     }
 }
 
@@ -206,7 +210,7 @@ Bomber.prototype.shootBullet = function() {
             this.width / 5, this.height / 5 * 2 / 3,
             this.direction,
             1000,
-            document.getElementById("bullet")));
+            this.bulletType));
     }
 }
 
@@ -217,10 +221,10 @@ Bomber.prototype.collide = function(collidedWith, originCollision) {
             this.alive = false;
 
             // Correct width and height due to different sizes of dead and alive images
-            this.width *= (this.dead.naturalWidth/this.image.naturalWidth);
-            this.height *= (this.dead.naturalHeight/this.image.naturalHeight);
+            // this.width *= (this.imageDead.naturalWidth / this.imageLive.naturalWidth);
+            // this.height *= (this.imageDead.naturalHeight / this.imageLive.naturalHeight);
 
-            this.image = this.dead;
+            this.imageLive = this.imageDead;
             this.numOfLives -= 1;
             this.speed = 0;
             this.vx = 0;

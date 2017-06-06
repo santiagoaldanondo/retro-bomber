@@ -1,13 +1,21 @@
+#garden,
 #bomber1,
+#bomber2,
+#bomber3,
 #bomber1-dead,
+#bomber2-dead,
+#bomber3-dead,
+#bomb1,
+#bomb2,
+#bomb3,
+#bomb-explosion,
+#bullet1,
+#bullet2,
+#bullet3,
+#bullet-explosion,
 #base1,
 #base1-dead,
-#missile1,
-#garden,
-#bomb,
-#bomb-explosion,
-#bullet,
-#bullet-explosion {
+#missile1 {
     display: none;
 }
 

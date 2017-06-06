@@ -1,19 +1,18 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Projectile gravity ctx viewX viewY timeRender:true*/
+/*global Drawable gravity ctx viewX viewY timeRender:true*/
 
-function Bomb(x, y, width, height, direction, speed, imageLive) {
-    Projectile.call(this, x, y);
+function Bomb1(x, y, direction, speed) {
+    Bomb.call(this, x, y, direction, speed);
     this.width = width;
     this.height = height;
-    this.imageLive = imageLive;
+    this.imageLive = document.getElementById("bomb1");
     this.direction = direction;
     this.speed = speed;
     this.vx = this.speed * Math.cos(this.direction * Math.PI / 180);
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
+    this.alive = true;
     this.damage = 100;
+    this.life = 0;
 }
-// Set the Bomb to inherit from Projectile
-Bomb.prototype = Object.create(Projectile.prototype);
-Bomb.prototype.constructor = Bomb;

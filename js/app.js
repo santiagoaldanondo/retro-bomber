@@ -1,25 +1,24 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global ion Background Bomber Base Explosion explosions players bases detectCollision:true*/
+/*global ion Background Bomber Bomber1 Bomber2 Bomber3 Base Explosion explosions players bases detectCollision:true*/
 
 //Initialize ion library, include sounds and set multiplay to true (so it can play multiple sounds at the same time)
 ion.sound({
-    sounds: [
-        {
-            name: "bomb-explode",
-            volume: 0.3
-        },
-        {
-            name: "base-explode",
-            volume: 0.5
-        },
-        {
-            name: "bullet-shot",
-            volume: 0.2
-        },
-        {
-            name: "missile-shot",
-            volume: 0.2
-        },
+    sounds: [{
+        name: "bomb-explode",
+        volume: 0.3
+    },
+    {
+        name: "base-explode",
+        volume: 0.5
+    },
+    {
+        name: "bullet-shot",
+        volume: 0.2
+    },
+    {
+        name: "missile-shot",
+        volume: 0.2
+    },
     ],
     path: "audios/",
     multiplay: true,
@@ -65,12 +64,12 @@ $(document).ready(function() {
 
     // Assign value to the backgroundImage, and populate players and bases
     backgroundImage = new Background(0, 0, document.getElementById("garden"));
-    players.push(new Bomber(40, worldHeight - 20, 80, 40, document.getElementById("bomber1"), 600, 600, 6));
+    players.push(new Bomber2(40, worldHeight - 20));
     bases.push(new Base(400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
     bases.push(new Base(600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
     bases.push(new Base(800, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1"),0.1));
-    bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1"),0.1));
+    bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+    bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
     bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
     bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
 
@@ -162,7 +161,7 @@ $(document).ready(function() {
             player.draw();
             player.bombs.forEach(function(bomb, bombKey) {
                 if (isOutOfBorders(bomb)) {
-                    bomb.collide(player, undefined);
+                    bomb.collide();
                     bomb = null;
                     player.bombs.splice(bombKey, 1);
                 } else {
@@ -171,7 +170,7 @@ $(document).ready(function() {
             }, this);
             player.bullets.forEach(function(bullet, bulletKey) {
                 if (isOutOfBorders(bullet)) {
-                    bullet.collide(player, undefined);
+                    bullet.collide();
                     bullet = null;
                     player.bullets.splice(bulletKey, 1);
                 } else {
@@ -190,11 +189,11 @@ $(document).ready(function() {
         explosions.forEach(function(explosion, explosionKey) {
             explosion.lifeLeft -= 1 / fps;
             if (explosion.lifeLeft > explosion.lifeTime / 2) {
-                explosion.width = explosion.initialWidth * (2 + 4 * (0.5 - explosion.lifeLeft/explosion.lifeTime));
-                explosion.height = explosion.initialHeight * (2 + 4 * (0.5 - explosion.lifeLeft/explosion.lifeTime));
+                explosion.width = explosion.initialWidth * (2 + 4 * (0.5 - explosion.lifeLeft / explosion.lifeTime));
+                explosion.height = explosion.initialHeight * (2 + 4 * (0.5 - explosion.lifeLeft / explosion.lifeTime));
             } else if (explosion.lifeLeft > 0) {
-                explosion.width = explosion.initialWidth * 2 * explosion.lifeLeft/explosion.lifeTime;
-                explosion.height = explosion.initialHeight * 2 * explosion.lifeLeft/explosion.lifeTime;
+                explosion.width = explosion.initialWidth * 2 * explosion.lifeLeft / explosion.lifeTime;
+                explosion.height = explosion.initialHeight * 2 * explosion.lifeLeft / explosion.lifeTime;
             } else {
                 explosions.splice(explosionKey, 1);
                 explosion.disappear();
@@ -209,7 +208,7 @@ $(document).ready(function() {
         bases.forEach(function(base) {
 
             // Shoot if the base is alive with its shooting pace
-            if (base.alive && Math.random() < base.shootingPace){
+            if (base.alive && Math.random() < base.shootingPace) {
                 base.shootBullet();
             }
 
@@ -256,7 +255,7 @@ $(document).ready(function() {
 
     // Checks for collisions between the players and the enemies' projectiles
     function checkPlayersCollisions() {
-                // Check for collisions for each player (between a player and a base's projectiles)
+        // Check for collisions for each player (between a player and a base's projectiles)
         players.forEach(function(player) {
             bases.forEach(function(base) {
                 base.bombs.forEach(function(bomb, bombKey) {
@@ -266,22 +265,22 @@ $(document).ready(function() {
                         ion.sound.play("bomb-explode");
 
                         player.collide(bomb, base);
-                        bomb.collide(player, undefined);
-                        bomb = null;
-                        base.bombs.splice(bombKey, 1);
+                        bomb.collide();
                         explosions.unshift(new Explosion(bomb.x,
                             bomb.y,
                             0.5 * bomb.width,
                             0.5 * bomb.height,
                             bomb.direction,
                             document.getElementById("bomb-explosion")));
+                        bomb = null;
+                        base.bombs.splice(bombKey, 1);
                     }
 
                 }, this);
                 base.bullets.forEach(function(bullet, bulletKey) {
                     if (detectCollision(player, bullet)) {
                         player.collide(bullet, base);
-                        bullet.collide(player, undefined);
+                        bullet.collide();
                         explosions.unshift(new Explosion(bullet.x,
                             bullet.y,
                             0.5 * bullet.width,
@@ -366,12 +365,10 @@ $(document).ready(function() {
 
 
     // Start over when player runs out of lives
-    function startOver() {
-    }
+    function startOver() {}
 
     // Start over when player runs out of lives
-    function nextLevel() {
-    }
+    function nextLevel() {}
 
     // Calls every function that requires to be updated
     function render() {
@@ -384,31 +381,31 @@ $(document).ready(function() {
                 }
             } else {
 
-            // Call the manageKeys function to run the methods corresponding to every key that is pressed
+                // Call the manageKeys function to run the methods corresponding to every key that is pressed
                 manageKeys();
 
-            // Clears the whole viewport
+                // Clears the whole viewport
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Determines the best viewport
+                // Determines the best viewport
                 determineViewport();
 
-            // Draws the background
+                // Draws the background
                 backgroundImage.draw();
 
-            // Check for collisions between the bases and the players' projectiles
+                // Check for collisions between the bases and the players' projectiles
                 checkBasesCollisions();
 
-            // Check for collisions between the players and the bases' projectiles
+                // Check for collisions between the players and the bases' projectiles
                 checkPlayersCollisions();
 
-            // Removes expired explosions
+                // Removes expired explosions
                 explosionStatus();
 
-            // draw all remaining objects
+                // draw all remaining objects
                 drawAllObjects();
 
-            // Update boards with health, lives and score
+                // Update boards with health, lives and score
                 updateBoards(players[0]);
             }
         } else if (playerHasLives(players[0])) {

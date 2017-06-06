@@ -14,25 +14,33 @@
 <body>
 
     <!-- Create all the images used in the canvas. All these images are hidden-->
+    <img id="garden" src="img/garden.jpg" alt="garden" />
     <img id="bomber1" src="img/bomber1.png" alt="bomber1" />
+    <img id="bomber2" src="img/bomber2.png" alt="bomber2" />
+    <img id="bomber3" src="img/bomber3.png" alt="bomber3" />
     <img id="bomber1-dead" src="img/bomber1-dead.png" alt="bomber1-dead" />
+    <img id="bomber2-dead" src="img/bomber2-dead.png" alt="bomber2-dead" />
+    <img id="bomber3-dead" src="img/bomber3-dead.png" alt="bomber3-dead" />
+    <img id="bomb1" src="img/bomb1.png" alt="bomb1" />
+    <img id="bomb2" src="img/bomb2.png" alt="bomb2" />
+    <img id="bomb3" src="img/bomb3.png" alt="bomb3" />
+    <img id="bomb-explosion" src="img/bomb-explosion.png" alt="bomb-explosion" />
+    <img id="bullet1" src="img/bullet1.png" alt="bullet1" />
+    <img id="bullet2" src="img/bullet2.png" alt="bullet2" />
+    <img id="bullet3" src="img/bullet3.png" alt="bullet3" />
+    <img id="bullet-explosion" src="img/bullet-explosion.png" alt="bullet-explosion" />
     <img id="base1" src="img/base1.png" alt="base1" />
     <img id="base1-dead" src="img/base1-dead.png" alt="base1-dead" />
-    <img id="bomb" src="img/bomb.png" alt="bomb" />
-    <img id="bomb-explosion" src="img/bomb-explosion.png" alt="bomb-explosion" />
     <img id="missile1" src="img/missile1.png" alt="missile1" />
-    <img id="bullet" src="img/bullet.png" alt="bullet" />
-    <img id="bullet-explosion" src="img/bullet-explosion.png" alt="bullet-explosion" />
-    <img id="garden" src="img/garden.jpg" alt="garden" />
 
     <div id="main-container">
-    	<div id="upper">
-			<div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
-			<div class="board" id="health">HEALTH: 
+        <div id="upper">
+            <div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
+            <div class="board" id="health">HEALTH:
                 <progress id="health-value" value="100" max="100"></progress>
             </div>
-			<div class="board" id="score">SCORE: <span id="score-value"></span></div>
-		</div>
+            <div class="board" id="score">SCORE: <span id="score-value"></span></div>
+        </div>
         <canvas id="canvas"></canvas>
     </div>
 
@@ -53,9 +61,11 @@
     <script type="text/javascript" src="js/drawable.js"></script>
     <script type="text/javascript" src="js/background.js"></script>
     <script type="text/javascript" src="js/bomber.js"></script>
-    <script type="text/javascript" src="js/base.js"></script>
+    <script type="text/javascript" src="js/bomber-children.js"></script>
+    <script type="text/javascript" src="js/projectile.js"></script>
     <script type="text/javascript" src="js/bomb.js"></script>
     <script type="text/javascript" src="js/bullet.js"></script>
+    <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/explosion.js"></script>
 
     <!--Controller-->
