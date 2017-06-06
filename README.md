@@ -33,8 +33,6 @@ Use the following keys to play this game:
 
 ## Bugs
 
-5. Explosions are very small now
-
 
 ## Next steps
 
@@ -53,8 +51,9 @@ Use the following keys to play this game:
 * NO: Add friction and lift forces
 * Show the number of lives with a number of images instead of a number. 
 * Change the css of the board.
-* Use browser cache to save information.
+* DONE: Use browser localStorage to save information.
 * Create a bonus object that gives random prizes to the player.
+* Create a new property image for bombers and toggle the imageAlive and imageDead. Check sizes for the planes due to different widths and heights.
 
 ## Fixed bugs
 
@@ -65,5 +64,9 @@ Use the following keys to play this game:
 3. Fix the collision to allow only one collision bewteen two objects. Right now one bullet will collide several times with an enemy. __--> Fixed by removing the element (bomb or bullet) from the array as soon as it collides. The problem is that I need to create an explosion object outside from bullets and bombs instead of using a dead image.__
 
 4. Need to show the explosion of the bullets and bombs when they collide. __--> Fixed by creating an Explosion class. When a projectile collides, a new explosion is created. The explosions have a lifetime after which they are deleted.__
+
+5. Explosions are very small after creating children classes for bombers. __--> Fixed by increasing the value by which their width and height are multiplied.__
+
+6. Cannot remove keys from localStorage with localStorage.removeItem(key). __--> I was saving to localstorage when rendering, I need to create a different logic.__
 
 

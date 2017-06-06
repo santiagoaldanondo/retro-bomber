@@ -2,6 +2,7 @@
 /*global players bases gravity detectCollision ctx:true*/
 
 // Declares the players
+
 var players = [];
 
 // Declares the military bases

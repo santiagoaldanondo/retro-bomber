@@ -214,7 +214,7 @@ Bomber.prototype.shootBullet = function() {
     }
 }
 
-Bomber.prototype.collide = function(collidedWith, originCollision) {
+Bomber.prototype.collide = function(collidedWith) {
     if (this.alive) {
         this.health -= collidedWith.damage;
         if (this.health <= 0) {
@@ -232,5 +232,15 @@ Bomber.prototype.collide = function(collidedWith, originCollision) {
             this.ax = 0;
             this.ay = 0;
         }
+    }
+}
+
+// Gets the score and number of lives from localStorage
+Bomber.prototype.getLocalStorage = function() {
+    if (localStorage.score) {
+        this.score = parseInt(localStorage.score);
+    }
+    if (localStorage.numOfLives) {
+        this.numOfLives = parseInt(localStorage.numOfLives);
     }
 }

@@ -1,5 +1,5 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global ion Background Bomber Bomber1 Bomber2 Bomber3 Base Explosion explosions players bases detectCollision:true*/
+/*global saveToLocal ion Background Bomber Bomber1 Bomber2 Bomber3 Base Explosion explosions players bases detectCollision:true*/
 
 //Initialize ion library, include sounds and set multiplay to true (so it can play multiple sounds at the same time)
 ion.sound({
@@ -73,6 +73,9 @@ $(document).ready(function() {
     bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
     bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
 
+    // Get the values from localStorage
+    players[0].getLocalStorage();
+
     // Create an array to keep the keys that are pressed
     var keyMap = [];
 
@@ -133,7 +136,7 @@ $(document).ready(function() {
         }
     }
 
-    // Draws every object and remove out of bounds projectiles
+    // Draws every object, remove out of bounds projectiles and remove explosions
     function drawAllObjects() {
         bases.forEach(function(base) {
             base.draw();
@@ -180,24 +183,8 @@ $(document).ready(function() {
         }, this);
 
         explosions.forEach(function(explosion) {
+            explosion.statusUpdate();
             explosion.draw();
-        }, this);
-    }
-
-    // Updates the explosion lifeLeft, width and height
-    function explosionStatus() {
-        explosions.forEach(function(explosion, explosionKey) {
-            explosion.lifeLeft -= 1 / fps;
-            if (explosion.lifeLeft > explosion.lifeTime / 2) {
-                explosion.width = explosion.initialWidth * (2 + 4 * (0.5 - explosion.lifeLeft / explosion.lifeTime));
-                explosion.height = explosion.initialHeight * (2 + 4 * (0.5 - explosion.lifeLeft / explosion.lifeTime));
-            } else if (explosion.lifeLeft > 0) {
-                explosion.width = explosion.initialWidth * 2 * explosion.lifeLeft / explosion.lifeTime;
-                explosion.height = explosion.initialHeight * 2 * explosion.lifeLeft / explosion.lifeTime;
-            } else {
-                explosions.splice(explosionKey, 1);
-                explosion.disappear();
-            }
         }, this);
     }
 
@@ -215,7 +202,7 @@ $(document).ready(function() {
             players.forEach(function(player) {
                 if (detectCollision(base, player)) {
                     base.collide(player, player);
-                    player.collide(base, base);
+                    player.collide(base);
                 }
                 player.bombs.forEach(function(bomb, bombKey) {
                     if (detectCollision(base, bomb)) {
@@ -223,13 +210,13 @@ $(document).ready(function() {
                         ion.sound.play("bomb-explode");
 
                         base.collide(bomb, player);
-                        bomb.collide(base, undefined);
                         explosions.unshift(new Explosion(bomb.x,
                             bomb.y,
                             0.5 * bomb.width,
                             0.5 * bomb.height,
                             bomb.direction,
                             document.getElementById("bomb-explosion")));
+                        bomb.collide();
                         bomb = null;
                         player.bombs.splice(bombKey, 1);
                     }
@@ -238,13 +225,13 @@ $(document).ready(function() {
                 player.bullets.forEach(function(bullet, bulletKey) {
                     if (detectCollision(base, bullet)) {
                         base.collide(bullet, player);
-                        bullet.collide(base, undefined);
                         explosions.unshift(new Explosion(bullet.x,
                             bullet.y,
                             0.5 * bullet.width,
                             0.5 * bullet.height,
                             bullet.direction,
                             document.getElementById("bullet-explosion")));
+                        bullet.collide();
                         bullet = null;
                         player.bullets.splice(bulletKey, 1);
                     }
@@ -265,13 +252,13 @@ $(document).ready(function() {
                         ion.sound.play("bomb-explode");
 
                         player.collide(bomb, base);
-                        bomb.collide();
                         explosions.unshift(new Explosion(bomb.x,
                             bomb.y,
                             0.5 * bomb.width,
                             0.5 * bomb.height,
                             bomb.direction,
                             document.getElementById("bomb-explosion")));
+                        bomb.collide();
                         bomb = null;
                         base.bombs.splice(bombKey, 1);
                     }
@@ -280,13 +267,13 @@ $(document).ready(function() {
                 base.bullets.forEach(function(bullet, bulletKey) {
                     if (detectCollision(player, bullet)) {
                         player.collide(bullet, base);
-                        bullet.collide();
                         explosions.unshift(new Explosion(bullet.x,
                             bullet.y,
                             0.5 * bullet.width,
                             0.5 * bullet.height,
                             bullet.direction,
                             document.getElementById("bullet-explosion")));
+                        bullet.collide();
                         bullet = null;
                         base.bullets.splice(bulletKey, 1);
                     }
@@ -373,6 +360,9 @@ $(document).ready(function() {
     // Calls every function that requires to be updated
     function render() {
 
+        // Save the current status of the game
+        saveToLocal();
+
         if (playerIsAlive(players[0])) {
             if (enemiesAreDead()) {
                 levelFinishedMessage();
@@ -400,7 +390,7 @@ $(document).ready(function() {
                 checkPlayersCollisions();
 
                 // Removes expired explosions
-                explosionStatus();
+                // explosionStatus();
 
                 // draw all remaining objects
                 drawAllObjects();

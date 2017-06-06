@@ -44,7 +44,20 @@ Explosion.prototype.draw = function() {
 
 // Create new methods for the Explosion class
 
+// Updates the lifeLeft, width and height
+Explosion.prototype.statusUpdate = function() {
+    this.lifeLeft -= 1 / fps;
+    if (this.lifeLeft > this.lifeTime / 2) {
+        this.width = 2 * this.initialWidth * (2 + 4 * (0.5 - this.lifeLeft / this.lifeTime));
+        this.height = 3 * this.initialHeight * (2 + 4 * (0.5 - this.lifeLeft / this.lifeTime));
+    } else if (this.lifeLeft > 0) {
+        this.width = 2 * this.initialWidth * 2 * this.lifeLeft / this.lifeTime;
+        this.height = 3 * this.initialHeight * 2 * this.lifeLeft / this.lifeTime;
+    } else {
+        this.disappear();
+    }
+}
+
 Explosion.prototype.disappear = function() {
     delete this;
 }
-
