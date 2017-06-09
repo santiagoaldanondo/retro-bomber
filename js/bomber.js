@@ -4,8 +4,6 @@
 // Create the class Bomber, that will inherit from the class Drawable
 function Bomber(x, y, width, height, imageLive, imageDead, acceleration, maxSpeed, agility, numOfBombs, bombType, bulletType, name) {
     Drawable.call(this, x, y);
-    this.initialX = this.x;
-    this.initialY = this.y;
     this.imageLive = imageLive;
     this.currentImage = imageLive;
     this.imageDead = imageDead;
@@ -26,9 +24,11 @@ function Bomber(x, y, width, height, imageLive, imageDead, acceleration, maxSpee
     this.maxHealth = this.health;
     this.numOfLives = 3;
     this.score = 0;
+    this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
     this.numOfBombs = numOfBombs;
+    this.maxBombs = this.numOfBombs;
     this.bombType = bombType;
     this.bulletType = bulletType;
     this.name = name;
@@ -174,7 +174,7 @@ Bomber.prototype.throwBomb = function() {
             this.width / 3,
             this.height / 3,
             this.direction,
-            this.speed,
+            this.speed
         ));
     }
 }
@@ -232,17 +232,35 @@ Bomber.prototype.collide = function(collidedWith) {
     }
 }
 
-// Gets the score and number of lives from localStorage
-Bomber.prototype.getLocalStorage = function() {
-    if (localStorage.numOfLives) {
-        if (parseInt(localStorage.numOfLives) > 0) {
-            this.numOfLives = parseInt(localStorage.numOfLives);
-        }
-    } else {
-        this.numOfLives = 3;
-        localStorage.removeItem("numOfLives");
+// Sets the initial attributes for the Bomber
+Bomber.prototype.clean = function() {
+    this.x = 0;
+    this.y = 0;
+    this.currentImage = this.imageLive;
+    this.direction = 0;
+    this.speed = 0;
+    this.vx = 0;
+    this.vy = 0;
+    this.ax = 0;
+    this.ay = 0;
+    this.alive = true;
+    this.health = this.maxHealth;
+    this.bombs = [];
+    this.bullets = [];
+    this.numOfBombs = this.maxBombs;
+}
+
+// save maxScore to local storage
+Bomber.prototype.saveToLocal = function() {
+    if (this.score > this.maxScore) {
+        this.maxScore = this.score;
+        localStorage.setItem("maxScore", this.maxScore);
     }
-    if (localStorage.numOfLives) {
-        this.score = parseInt(localStorage.score);
+}
+
+// Gets the maxScore from local storage if it exists
+Bomber.prototype.getFromLocal = function() {
+    if (localStorage.maxScore) {
+        this.maxScore = parseInt(localStorage.maxScore);
     }
 }

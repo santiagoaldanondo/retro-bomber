@@ -4,10 +4,9 @@
 // Create children of the Bomber class. These children classes will be the ones chosen by the player
 
 // Create the class Bomber1, that will inherit from the class Bomber
-function Bomber1(x, y) {
-    Bomber.call(this, x, y);
-    this.initialX = this.x;
-    this.initialY = this.y;
+function Bomber1() {
+    this.x = 0;
+    this.y = 0;
     this.imageLive = document.getElementById("bomber1");
     this.imageDead = document.getElementById("bomber1-dead");
     this.currentImage = this.imageLive;
@@ -28,9 +27,11 @@ function Bomber1(x, y) {
     this.maxHealth = this.health;
     this.numOfLives = 3;
     this.score = 0;
+    this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
     this.numOfBombs = 100;
+    this.maxBombs = this.numOfBombs;
     this.bombType = Bomb1;
     this.bulletType = Bullet1;
     this.name = "Crazy bomber"
@@ -41,12 +42,10 @@ Bomber1.prototype = Object.create(Bomber.prototype);
 Bomber1.prototype.constructor = Bomber1;
 
 
-
 // Create the class Bomber2, that will inherit from the class Bomber
-function Bomber2(x, y) {
-    Bomber.call(this, x, y);
-    this.initialX = this.x;
-    this.initialY = this.y;
+function Bomber2() {
+    this.x = 0;
+    this.y = 0;
     this.imageLive = document.getElementById("bomber2");
     this.imageDead = document.getElementById("bomber2-dead");
     this.currentImage = this.imageLive;
@@ -67,9 +66,11 @@ function Bomber2(x, y) {
     this.maxHealth = this.health;
     this.numOfLives = 3;
     this.score = 0;
+    this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
     this.numOfBombs = 100;
+    this.maxBombs = this.numOfBombs;
     this.bombType = Bomb2;
     this.bulletType = Bullet2;
     this.name = "Angry fighter";
@@ -80,12 +81,10 @@ Bomber2.prototype = Object.create(Bomber.prototype);
 Bomber2.prototype.constructor = Bomber2;
 
 
-
 // Create the class Bomber2, that will inherit from the class Bomber
-function Bomber3(x, y) {
-    Bomber.call(this, x, y);
-    this.initialX = this.x;
-    this.initialY = this.y;
+function Bomber3() {
+    this.x = 0;
+    this.y = 0;
     this.imageLive = document.getElementById("bomber3");
     this.imageDead = document.getElementById("bomber3-dead");
     this.currentImage = this.imageLive;
@@ -106,9 +105,11 @@ function Bomber3(x, y) {
     this.maxHealth = this.health;
     this.numOfLives = 3;
     this.score = 0;
+    this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
     this.numOfBombs = 100;
+    this.maxBombs = this.numOfBombs;
     this.bombType = Bomb3;
     this.bulletType = Bullet3;
     this.name = "Acrobat rider";

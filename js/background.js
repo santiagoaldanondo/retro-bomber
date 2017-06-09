@@ -1,3 +1,6 @@
+// Declare global variables to avoid no-undef errors from Eslint:
+/*global Drawable viewX viewY ctx:true*/
+
 function Background(x, y, image) {
     Drawable.call(this, x, y);
     this.image = image;
@@ -11,5 +14,5 @@ Background.prototype.draw = function() {
     // Move the position of the background according to the viewport
     this.x = -viewX;
     this.y = -viewY
-    ctx.drawImage(this.image, this.x, this.y, worldWidth, worldHeight);
+    ctx.drawImage(this.image, this.x, this.y, this.image.naturalWidth, this.image.naturalHeight);
 }
