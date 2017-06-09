@@ -25,6 +25,8 @@ ion.sound({
     preload: true
 });
 
+// Create global variables
+
 // canvas variables
 var canvas, ctx;
 
@@ -43,8 +45,60 @@ var timeRender = 1 / fps;
 var worldWidth = 1920;
 var worldHeight = 1080;
 
+// Create a variable to prevent bombs from being thrown with a single click of the button. You must
+// release it and click it again in order to throw a second bomb
+var isBombPressed = false;
+
 // When document is ready
 $(document).ready(function() {
+
+    // FUNCTIONS FROM THE START SCREEN
+
+    // Chooses a player in the start-screen
+    document.getElementById("choose-bomber1").onclick = function() {
+
+        // Remove selected class from the previous selected bomber
+        if (document.getElementsByClassName("selected")[0] !== undefined) {
+            document.getElementsByClassName("selected")[0].classList.remove("selected");
+        }
+
+        // Add the selected class to the chosen bomber
+        document.getElementById("choose-bomber1").classList.add("selected");
+
+        // Set players[0] to the chosen bomber class
+        players[0] = new Bomber1(40, worldHeight - 20);
+    };
+
+    document.getElementById("choose-bomber2").onclick = function() {
+
+        // Remove selected class from the previous selected bomber
+        if (document.getElementsByClassName("selected")[0] !== undefined) {
+            document.getElementsByClassName("selected")[0].classList.remove("selected");
+        }
+
+        // Add the selected class to the chosen bomber
+        document.getElementById("choose-bomber2").classList.add("selected");
+
+        // Set players[0] to the chosen bomber class
+        players[0] = new Bomber2(40, worldHeight - 20);
+    };
+
+    document.getElementById("choose-bomber3").onclick = function() {
+
+        // Remove selected class from the previous selected bomber
+        if (document.getElementsByClassName("selected")[0] !== undefined) {
+            document.getElementsByClassName("selected")[0].classList.remove("selected");
+        }
+
+        // Add the selected class to the chosen bomber
+        document.getElementById("choose-bomber3").classList.add("selected");
+
+        // Set players[0] to the chosen bomber class
+        players[0] = new Bomber3(40, worldHeight - 20);
+    };
+
+
+    // FUNCTIONS FOR CANVAS
 
     // Create canvas
     canvas = document.getElementById("canvas");
@@ -55,36 +109,41 @@ $(document).ready(function() {
     canvas.focus();
 
     // Set the size of the canvas.
-    canvas.width = Math.min(window.innerWidth * 0.95, worldWidth);
-    canvas.height = Math.min(window.innerHeight * 0.95, worldHeight);
+    canvas.width = Math.min(window.innerWidth * 0.9, worldWidth);
+    canvas.height = Math.min(window.innerHeight * 0.9, worldHeight);
 
     // Set initial position in the viewport
     viewX = 0;
     viewY = 0;
-
-    // Assign value to the backgroundImage, and populate players and bases
-    backgroundImage = new Background(0, 0, document.getElementById("garden"));
-    players.push(new Bomber2(40, worldHeight - 20));
-    bases.push(new Base(400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(800, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-
-    // Get the values from localStorage
-    players[0].getLocalStorage();
 
     // Create an array to keep the keys that are pressed
     var keyMap = [];
 
     // Use the onkeydown and onkeyup events to modify the values on the keyMap array:
     // onkeydown turns it true and onkeyup turns it false. Otherwise it is undefined
-    window.onkeydown = window.onkeyup = function(e) {
+    window.onkeydown = function(e) {
         e = e || event; // to deal with IE
         keyMap[e.keyCode] = e.type == "keydown";
 
+        // If the key is the "B" used to throw bombs...
+        if (e.keyCode === 66) {
+            if (!isBombPressed) {
+                isBombPressed = true;
+            } else {
+                keyMap[e.keyCode] = false;
+            }
+        }
+        keyMap[e.keyCode]
+    }
+
+    window.onkeyup = function(e) {
+        e = e || event; // to deal with IE
+        keyMap[e.keyCode] = e.type == "keydown";
+
+        // If the key is the "B" used to throw bombs...
+        if (e.keyCode === 66) {
+            isBombPressed = false;
+        }
     }
 
     // Check the values of the keyMap array. It will be called inside the render function.
@@ -105,6 +164,9 @@ $(document).ready(function() {
         }
         if (keyMap[66] === true) { // key = left arrow
             players[0].throwBomb();
+
+            // Prevent to throw several bombs on a key down
+            keyMap[66] = false;
         }
         if (keyMap[32] === true) { // key = left arrow
             players[0].shootBullet();
@@ -284,11 +346,12 @@ $(document).ready(function() {
 
     // Updates the boards with the players information
     function updateBoards(player) {
-        document.getElementById("lives-value").innerHTML = player.numOfLives;
+        document.getElementById("score-value").innerHTML = player.score;
         document.getElementById("health-value").value = player.health;
         document.getElementById("health-value").max = player.maxHealth;
         document.getElementById("health-value").style.width = player.maxHealth + "px";
-        document.getElementById("score-value").innerHTML = player.score;
+        document.getElementById("lives-value").innerHTML = player.numOfLives;
+        document.getElementById("numOfBombs-value").innerHTML = player.numOfBombs;
     }
 
     // Checks if the player is alive at the moment
@@ -343,16 +406,24 @@ $(document).ready(function() {
     function keepPlaying(player) {
         player.health = player.maxHealth;
         player.alive = true;
-        player.image = document.getElementById("bomber1");
+        player.currentImage = player.imageLive;
         player.x = player.initialX;
         player.y = player.initialY;
         player.direction = 0;
     }
 
-
-
     // Start over when player runs out of lives
-    function startOver() {}
+    function startOver() {
+
+        // Hide and show elements
+        document.getElementById("canvas").style.display = "none";
+        document.getElementById("upper").style.display = "none";
+        document.getElementById("start-screen").style.display = "block";
+
+        // Remove selected class from the previous selected bomber
+        document.getElementsByClassName("selected")[0].classList.remove("selected");
+
+    }
 
     // Start over when player runs out of lives
     function nextLevel() {}
@@ -389,9 +460,6 @@ $(document).ready(function() {
                 // Check for collisions between the players and the bases' projectiles
                 checkPlayersCollisions();
 
-                // Removes expired explosions
-                // explosionStatus();
-
                 // draw all remaining objects
                 drawAllObjects();
 
@@ -411,7 +479,34 @@ $(document).ready(function() {
         }
     }
 
-    // Starts rendering the game and keeps going with the given fps
-    window.setInterval(render, timeRender * 1000);
+    // Start game if click on start game and there is a selected player
+    document.getElementById("start-game").onclick = function() {
+        if (players[0] !== undefined) {
+
+            // Hide and show elements
+            document.getElementById("canvas").style.display = "block";
+            document.getElementById("upper").style.display = "block";
+            document.getElementById("start-screen").style.display = "none";
+            document.getElementById("error-message").style.display = "none";
+
+            // Assign value to the backgroundImage, and populate players and bases
+            backgroundImage = new Background(0, 0, document.getElementById("garden"));
+            bases.push(new Base(400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+            bases.push(new Base(600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+            bases.push(new Base(800, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+            bases.push(new Base(1000, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+            bases.push(new Base(1200, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+            bases.push(new Base(1400, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+            bases.push(new Base(1600, worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+
+            // Get the values from localStorage
+            players[0].getLocalStorage();
+
+            // Starts rendering the game and keeps going with the given fps
+            window.setInterval(render, timeRender * 1000);
+        } else {
+            document.getElementById("error-message").style.display = "block";
+        }
+    };
 
 });

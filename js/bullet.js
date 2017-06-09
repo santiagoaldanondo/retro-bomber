@@ -1,7 +1,7 @@
 // Declare global variables to avoid no-undef errors from Eslint:
 /*global Projectile gravity ctx viewX viewY timeRender:true*/
 
-function Bullet(x, y, width, height, direction, speed, imageLive) {
+function Bullet(x, y, width, height, direction, speed, damage, imageLive) {
     Projectile.call(this, x, y);
     this.width = width;
     this.height = height;
@@ -12,7 +12,7 @@ function Bullet(x, y, width, height, direction, speed, imageLive) {
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
-    this.damage = 5;
+    this.damage = damage;
 }
 // Set the Bullet to inherit from Projectile
 Bullet.prototype = Object.create(Projectile.prototype);

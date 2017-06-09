@@ -1,7 +1,7 @@
 // Declare global variables to avoid no-undef errors from Eslint:
 /*global Drawable gravity ctx viewX viewY timeRender:true*/
 
-function Projectile(x, y, width, height, direction, speed, imageLive) {
+function Projectile(x, y, width, height, direction, speed, damage, imageLive) {
     Drawable.call(this, x, y);
     this.width = width;
     this.height = height;
@@ -12,7 +12,7 @@ function Projectile(x, y, width, height, direction, speed, imageLive) {
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
-    this.damage = 5;
+    this.damage = damage;
 }
 // Set the Projectile to inherit from Drawable
 Projectile.prototype = Object.create(Drawable.prototype);

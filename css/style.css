@@ -1,17 +1,17 @@
+body {
+    font-family: 'Indie Flower', cursive;
+    /*font-family: 'Gloria Hallelujah', cursive;
+    font-family: 'Permanent Marker', cursive;
+    font-family: 'Rock Salt', cursive;
+    font-family: 'Love Ya Like A Sister', cursive;
+    font-family: 'Monoton', cursive;*/
+}
+
 #garden,
-#bomber1,
-#bomber2,
-#bomber3,
 #bomber1-dead,
 #bomber2-dead,
 #bomber3-dead,
-#bomb1,
-#bomb2,
-#bomb3,
 #bomb-explosion,
-#bullet1,
-#bullet2,
-#bullet3,
 #bullet-explosion,
 #base1,
 #base1-dead,
@@ -24,18 +24,111 @@
     position: relative;
 }
 
+
+/*CSS FOR THE CANVAS*/
+
 #upper {
-    width: 90%;
+    display: none;
+    width: 86vw;
     position: absolute;
     z-index: 1;
-    margin: 30px 4%;
     text-align: left;
+    left: 7vw;
+    margin: 3vh auto 3vh auto;
 }
 
 #canvas {
-    margin: 20px auto 0 auto;
+    display: none;
+    margin: 4vh auto 4vh auto;
 }
 
-#lives {
+#score {
     float: right;
+}
+
+
+/*CSS FOR THE START SCREEN*/
+
+#pre-title {
+    font-family: 'Monoton', cursive;
+    font-size: 24px;
+    margin: 30px auto 20px auto;
+    color: #32CD32;
+}
+
+h1 {
+    font-family: 'Monoton', cursive;
+    font-size: 44px;
+    margin: 20px auto 30px auto;
+    color: #228B22;
+}
+
+.normal-text {
+    font-size: 16px;
+    margin: 10px auto;
+    color: #234;
+}
+
+#start-screen {
+    margin: 4vh auto 4vh auto;
+    width: 90vw;
+    height: 90vh;
+    text-align: center;
+    background-color: #fffacd;
+    border: 2px solid #F0E68C;
+    border-radius: 5px;
+}
+
+section {
+    margin: 10px;
+}
+
+.choose-bomber {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    background-color: #F0E68C;
+    border: 2px solid #D2691E;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.bomber-image {
+    width: 100px;
+    height: 60px;
+    margin: 10px;
+}
+
+.bomb-image {
+    width: 40px;
+    height: 20px;
+    margin: 10px;
+}
+
+.bullet-image {
+    width: 30px;
+    height: 6px;
+    margin: 10px;
+}
+
+#error-message {
+    display: none;
+    color: red;
+}
+
+#start-game {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 20px;
+    padding: 5px 10px;
+    background-color: #daa520;
+    color: #228B22;
+    border: 1px solid #32CD32;
+    border-radius: 5px;
+    box-shadow: 1px 1px #228B22;
+}
+
+.selected {
+    background-color: #9ACD32;
+    border: 2px solid #228B22;
 }

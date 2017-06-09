@@ -39,21 +39,22 @@ Use the following keys to play this game:
 * DONE: Create floor, walls and ceiling. ?? Maybe in the background object
 * DONE: Check collision of bombs and bullets with bomber.
 * DONE: Create score, health and number of lives, put it on the screen and update it.
-* ?? Create a small canvas to show the current viewport position in the whole map.
-* ?? Refactorize classes, inheritance and methods. Maybe use functional programming.
+* NO: Create a small canvas to show the current viewport position in the whole map.
+* NO: Refactorize classes, inheritance and methods. Maybe use functional programming.
 * DONE: Create models for different bombers, bases, bombs and bullets.
-* Create an html page to choose the models.
+* DONE: Create an html page to choose the models.
 * Create levels with different backgrounds and modify methods to make it more difficult.
 * DONE: Add sounds.
 * DONE: Add transitions to collisions.
-* Add gravity to Bomber.
+* NO: Add gravity to Bomber.
 * DONE: Forbid going backwards or otherwise change the bullets and bombs' direction.
 * NO: Add friction and lift forces
 * Show the number of lives with a number of images instead of a number. 
-* Change the css of the board.
+* NO: Change the css of the board.
 * DONE: Use browser localStorage to save information.
 * Create a bonus object that gives random prizes to the player.
-* Create a new property image for bombers and toggle the imageAlive and imageDead. Check sizes for the planes due to different widths and heights.
+* DONE: Create a new property image for bombers and toggle the imageAlive and imageDead. Check sizes for the planes due to different widths and heights.
+* Prevent bombs from being accidentaly thrown in a row 
 
 ## Fixed bugs
 
@@ -67,6 +68,8 @@ Use the following keys to play this game:
 
 5. Explosions are very small after creating children classes for bombers. __--> Fixed by increasing the value by which their width and height are multiplied.__
 
-6. Cannot remove keys from localStorage with localStorage.removeItem(key). __--> I was saving to localstorage when rendering, I need to create a different logic.__
+6. Cannot remove keys from localStorage with localStorage.removeItem(key). __--> I was saving to localstorage when rendering, I fixed the conditions to set and get from/to localStorage.__
+
+7. Multiple bombs can be thrown on a single click. __--> Include conditions for the key used to throw bombs, requiring a keyup event before the key can be set to true again and trigger a throw bomb.__
 
 

@@ -1,5 +1,5 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Drawable Bullet players ctx viewX viewY ion:true*/
+/*global Drawable Bullet Missile1 players ctx viewX viewY ion:true*/
 
 // Create the class Base, that will inherit from the class Drawable
 function Base(x, y, width, height, image, shootingPace) {
@@ -16,6 +16,7 @@ function Base(x, y, width, height, image, shootingPace) {
     this.damage = 10000;
     this.life = 200
     this.worth = 100;
+    this.bulletType = Missile1;
 }
 
 // Set the Base to inherit from Drawable
@@ -53,9 +54,9 @@ Base.prototype.directBullet = function(player) {
     var distanceY = player.y - this.y;
     var bulletDirection;
     if (distanceX >= 0) {
-        bulletDirection = Math.atan(distanceY/distanceX) / Math.PI * 180;
+        bulletDirection = Math.atan(distanceY / distanceX) / Math.PI * 180;
     } else {
-        bulletDirection = Math.atan(distanceY/distanceX) / Math.PI * 180 + 180;
+        bulletDirection = Math.atan(distanceY / distanceX) / Math.PI * 180 + 180;
     }
     return bulletDirection;
 }
@@ -65,12 +66,12 @@ Base.prototype.shootBullet = function() {
     // Play sound
     ion.sound.play("missile-shot");
 
-    this.bullets.push(new Bullet(this.x,
+    this.bullets.push(new this.bulletType(this.x,
         this.y,
-        this.width / 4, this.height / 10,
+        this.width / 4,
+        this.height / 10,
         this.directBullet(players[0]),
-        500,
-        document.getElementById("missile1")));
+        500));
 }
 
 Base.prototype.collide = function(collidedWith, originCollision) {

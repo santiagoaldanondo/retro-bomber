@@ -1,12 +1,13 @@
 // Declare global variables to avoid no-undef errors from Eslint:
-/*global Drawable Bomb Bullet ctx viewX viewY timeRender ion:true*/
+/*global gravity Drawable Bomb Bullet ctx viewX viewY timeRender ion:true*/
 
 // Create the class Bomber, that will inherit from the class Drawable
-function Bomber(x, y, width, height, imageLive, imageDead, acceleration, maxSpeed, agility, bombType, bulletType) {
+function Bomber(x, y, width, height, imageLive, imageDead, acceleration, maxSpeed, agility, numOfBombs, bombType, bulletType, name) {
     Drawable.call(this, x, y);
     this.initialX = this.x;
     this.initialY = this.y;
     this.imageLive = imageLive;
+    this.currentImage = imageLive;
     this.imageDead = imageDead;
     this.width = width;
     this.height = height;
@@ -27,9 +28,10 @@ function Bomber(x, y, width, height, imageLive, imageDead, acceleration, maxSpee
     this.score = 0;
     this.bombs = [];
     this.bullets = [];
-    this.numOfBombs = 1000;
+    this.numOfBombs = numOfBombs;
     this.bombType = bombType;
     this.bulletType = bulletType;
+    this.name = name;
 }
 
 // Set the Bomber to inherit from Drawable
@@ -58,7 +60,7 @@ Bomber.prototype.draw = function() {
 
     ctx.setTransform(xdx, xdy, -xdy, xdx, this.x - viewX, this.y - viewY);
 
-    ctx.drawImage(this.imageLive, -this.width / 2, -this.height / 2, this.width, this.height);
+    ctx.drawImage(this.currentImage, -this.width / 2, -this.height / 2, this.width, this.height);
 
     // reset the transform
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -167,12 +169,13 @@ Bomber.prototype.throwBomb = function() {
         bombY -= this.height / 2;
 
         // Creates a new bullet in the given coordinates
-        this.bombs.push(new Bomb(this.x + this.width / 3 + bombX,
+        this.bombs.push(new this.bombType(this.x + this.width / 3 + bombX,
             this.y + this.height / 3 + bombY,
-            this.width / 3, this.height / 3,
+            this.width / 3,
+            this.height / 3,
             this.direction,
             this.speed,
-            this.bombType));
+        ));
     }
 }
 
@@ -205,12 +208,11 @@ Bomber.prototype.shootBullet = function() {
 
         // Play sound
         ion.sound.play("bullet-shot");
-        this.bullets.push(new Bullet(this.x + this.width / 3 + bulletX,
+        this.bullets.push(new this.bulletType(this.x + this.width / 3 + bulletX,
             this.y + this.height / 3 + bulletY,
-            this.width / 5, this.height / 5 * 2 / 3,
-            this.direction,
-            1000,
-            this.bulletType));
+            this.width / 5,
+            this.height / 5 * 2 / 3,
+            this.direction));
     }
 }
 
@@ -219,12 +221,7 @@ Bomber.prototype.collide = function(collidedWith) {
         this.health -= collidedWith.damage;
         if (this.health <= 0) {
             this.alive = false;
-
-            // Correct width and height due to different sizes of dead and alive images
-            // this.width *= (this.imageDead.naturalWidth / this.imageLive.naturalWidth);
-            // this.height *= (this.imageDead.naturalHeight / this.imageLive.naturalHeight);
-
-            this.imageLive = this.imageDead;
+            this.currentImage = this.imageDead;
             this.numOfLives -= 1;
             this.speed = 0;
             this.vx = 0;
@@ -237,10 +234,15 @@ Bomber.prototype.collide = function(collidedWith) {
 
 // Gets the score and number of lives from localStorage
 Bomber.prototype.getLocalStorage = function() {
-    if (localStorage.score) {
-        this.score = parseInt(localStorage.score);
+    if (localStorage.numOfLives) {
+        if (parseInt(localStorage.numOfLives) > 0) {
+            this.numOfLives = parseInt(localStorage.numOfLives);
+        }
+    } else {
+        this.numOfLives = 3;
+        localStorage.removeItem("numOfLives");
     }
     if (localStorage.numOfLives) {
-        this.numOfLives = parseInt(localStorage.numOfLives);
+        this.score = parseInt(localStorage.score);
     }
 }

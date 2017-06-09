@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- reset css -->
     <link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+
+    <!--Imported fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Indie+Flower|Love+Ya+Like+A+Sister|Monoton|Permanent+Marker|Rock+Salt" rel="stylesheet">
+
     <!-- custom css-->
     <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
 </head>
@@ -15,34 +19,76 @@
 
     <!-- Create all the images used in the canvas. All these images are hidden-->
     <img id="garden" src="img/garden.jpg" alt="garden" />
-    <img id="bomber1" src="img/bomber1.png" alt="bomber1" />
-    <img id="bomber2" src="img/bomber2.png" alt="bomber2" />
-    <img id="bomber3" src="img/bomber3.png" alt="bomber3" />
     <img id="bomber1-dead" src="img/bomber1-dead.png" alt="bomber1-dead" />
     <img id="bomber2-dead" src="img/bomber2-dead.png" alt="bomber2-dead" />
     <img id="bomber3-dead" src="img/bomber3-dead.png" alt="bomber3-dead" />
-    <img id="bomb1" src="img/bomb1.png" alt="bomb1" />
-    <img id="bomb2" src="img/bomb2.png" alt="bomb2" />
-    <img id="bomb3" src="img/bomb3.png" alt="bomb3" />
+
     <img id="bomb-explosion" src="img/bomb-explosion.png" alt="bomb-explosion" />
-    <img id="bullet1" src="img/bullet1.png" alt="bullet1" />
-    <img id="bullet2" src="img/bullet2.png" alt="bullet2" />
-    <img id="bullet3" src="img/bullet3.png" alt="bullet3" />
     <img id="bullet-explosion" src="img/bullet-explosion.png" alt="bullet-explosion" />
     <img id="base1" src="img/base1.png" alt="base1" />
     <img id="base1-dead" src="img/base1-dead.png" alt="base1-dead" />
     <img id="missile1" src="img/missile1.png" alt="missile1" />
 
+    <!-- All html visible content-->
     <div id="main-container">
+
+        <!--Start screen where you choose your player -->
+        <div id="start-screen">
+            <section id="start-title">
+                <pre id="pre-title">WELCOME   TO</pre>
+                <h1>RETRO - BOMBER</h1>
+                <p class="normal-text">-- Choose your bomber and press START --</p>
+            </section>
+
+            <section id="choose-section">
+                <div class="choose-bomber" id="choose-bomber1">
+                    <h2 id="bomber1-name"></h2>
+                    <img id="bomber1" class="bomber-image" src="img/bomber1.png" alt="bomber1" />
+                    <img id="bullet1" class="bullet-image" src="img/bullet1.png" alt="bullet1" />
+                    <img id="bomb1" class="bomb-image" src="img/bomb1.png" alt="bomb1" />
+                </div>
+                <div class="choose-bomber" id="choose-bomber2">
+                    <img id="bomber2" class="bomber-image" src="img/bomber2.png" alt="bomber2" />
+                    <img id="bullet2" class="bullet-image" src="img/bullet2.png" alt="bullet2" />
+                    <img id="bomb2" class="bomb-image" src="img/bomb2.png" alt="bomb2" />
+                </div>
+                <div class="choose-bomber" id="choose-bomber3">
+                    <img id="bomber3" class="bomber-image" src="img/bomber3.png" alt="bomber3" />
+                    <img id="bullet3" class="bullet-image" src="img/bullet3.png" alt="bullet3" />
+                    <img id="bomb3" class="bomb-image" src="img/bomb3.png" alt="bomb3" />
+                </div>
+            </section>
+
+            <section>
+                <button id="start-game">Start game</button>
+            </section>
+
+            <section>
+                <p id="random-message" class="normal-text"></p>
+            </section>
+
+            <section id="error-message">
+                <p>You didn't select any bomber, please choose one and then click START</p>
+            </section>
+
+        </div>
+
+
         <div id="upper">
-            <div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
+            <div class="board" id="score">SCORE: <span id="score-value"></span></div>
             <div class="board" id="health">HEALTH:
                 <progress id="health-value" value="100" max="100"></progress>
             </div>
-            <div class="board" id="score">SCORE: <span id="score-value"></span></div>
+            <div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
+            <div class="board" id="numOfBombs">N. BOMBS: <span id="numOfBombs-value"></span></div>
         </div>
+
         <canvas id="canvas"></canvas>
+
+
     </div>
+
+
 
     <!--Scripts-->
 
@@ -67,7 +113,9 @@
     <script type="text/javascript" src="js/bomber-children.js"></script>
     <script type="text/javascript" src="js/projectile.js"></script>
     <script type="text/javascript" src="js/bomb.js"></script>
+    <script type="text/javascript" src="js/bomb-children.js"></script>
     <script type="text/javascript" src="js/bullet.js"></script>
+    <script type="text/javascript" src="js/bullet-children.js"></script>
     <script type="text/javascript" src="js/base.js"></script>
     <script type="text/javascript" src="js/explosion.js"></script>
 
