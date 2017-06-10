@@ -290,7 +290,7 @@ window.onload = function() {
     // Message printed when player loses one life
     function lostLifeMessage() {
         ctx.fillStyle = "darkred";
-        ctx.font = 0.05 * canvas.width + "px Ubuntu";
+        ctx.font = 0.05 * canvas.width + "px Indie Flower";
         ctx.textAlign = "center";
         ctx.fillText("You lost one life", 0.5 * canvas.width, 0.4 * canvas.height);
         ctx.fillText("Press enter to continue", 0.5 * canvas.width, 0.6 * canvas.height);
@@ -299,7 +299,7 @@ window.onload = function() {
     // Message printed when player runs out of lives
     function gameOverMessage() {
         ctx.fillStyle = "darkred";
-        ctx.font = 0.05 * canvas.width + "px Ubuntu";
+        ctx.font = 0.05 * canvas.width + "px Indie Flower";
         ctx.textAlign = "center";
         ctx.fillText("You lost all your lives", 0.5 * canvas.width, 0.4 * canvas.height);
         ctx.fillText("Press enter to start over", 0.5 * canvas.width, 0.6 * canvas.height);
@@ -308,7 +308,7 @@ window.onload = function() {
     // Message printed when player runs out of lives
     function levelFinishedMessage() {
         ctx.fillStyle = "darkblue";
-        ctx.font = 0.05 * canvas.width + "px Ubuntu";
+        ctx.font = 0.05 * canvas.width + "px Indie Flower";
         ctx.textAlign = "center";
         ctx.fillText("You finished this level", 0.5 * canvas.width, 0.4 * canvas.height);
         ctx.fillText("Press enter to start next level", 0.5 * canvas.width, 0.6 * canvas.height);
@@ -353,6 +353,18 @@ window.onload = function() {
         // Sets the position of the player to the bottom left of the world
         players[0].x = 40;
         players[0].y = level.worldHeight - 20;
+
+        // Removes the bullets and bombs from their arrays
+
+        level.bases.forEach(function(base) {
+            base.bombs = [];
+            base.bullets = [];
+        }, this);
+
+        players.forEach(function(player) {
+            player.bombs = [];
+            player.bullets = [];
+        }, this);
 
         // Starts rendering the game and keeps going with the given fps
         gameInterval = window.setInterval(render, timeRender * 1000);

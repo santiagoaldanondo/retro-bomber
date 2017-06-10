@@ -2,7 +2,7 @@
 /*global Drawable Bullet Missile1 players ctx viewX viewY ion:true*/
 
 // Create the class Base, that will inherit from the class Drawable
-function Base(x, y, width, height, image, shootingPace, life, worth) {
+function Base(x, y, width, height, image, shootingPace, health, worth, accuracy) {
     Drawable.call(this, x, y);
     this.width = width;
     this.height = height;
@@ -14,9 +14,10 @@ function Base(x, y, width, height, image, shootingPace, life, worth) {
     this.dead = document.getElementById("base1-dead");
     this.alive = true;
     this.damage = 10000;
-    this.life = life;
+    this.health = health;
     this.worth = worth;
     this.bulletType = Missile1;
+    this.accuracy = accuracy;
 }
 
 // Set the Base to inherit from Drawable
@@ -66,18 +67,20 @@ Base.prototype.shootBullet = function() {
     // Play sound
     ion.sound.play("missile-shot");
 
+    var finalDirection = this.directBullet(players[0]) + (1 - this.accuracy) * Math.random() * 360;
+
     this.bullets.push(new this.bulletType(this.x,
         this.y,
         this.width / 4,
         this.height / 10,
-        this.directBullet(players[0]),
+        finalDirection,
         500));
 }
 
 Base.prototype.collide = function(collidedWith, originCollision) {
     if (this.alive) {
-        this.life -= collidedWith.damage;
-        if (this.life <= 0) {
+        this.health -= collidedWith.damage;
+        if (this.health <= 0) {
 
             // Play sound
             ion.sound.play("base-explode");
