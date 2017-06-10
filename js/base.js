@@ -2,7 +2,7 @@
 /*global Drawable Bullet Missile1 players ctx viewX viewY ion:true*/
 
 // Create the class Base, that will inherit from the class Drawable
-function Base(x, y, width, height, image, shootingPace) {
+function Base(x, y, width, height, image, shootingPace, life, worth) {
     Drawable.call(this, x, y);
     this.width = width;
     this.height = height;
@@ -14,8 +14,8 @@ function Base(x, y, width, height, image, shootingPace) {
     this.dead = document.getElementById("base1-dead");
     this.alive = true;
     this.damage = 10000;
-    this.life = 200
-    this.worth = 100;
+    this.life = life;
+    this.worth = worth;
     this.bulletType = Missile1;
 }
 

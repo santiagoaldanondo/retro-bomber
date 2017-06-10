@@ -37,58 +37,125 @@
     <!-- All html visible content-->
     <div id="main-container">
 
+        <div id="upper">
+            <div class="board" id="max-score">MAX. SCORE: <span id="max-score-value">0</span></div>
+            <div class="board" id="score">SCORE: <span id="score-value"></span></div>
+            <div class="board" id="health">HEALTH:
+                <progress id="health-value" value="100" max="100"></progress>
+            </div>
+            <div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
+            <div class="board" id="num-of-bombs">N. BOMBS: <span id="num-of-bombs-value"></span></div>
+        </div>
+
+
         <!--Start screen where you choose your player -->
         <div id="start-screen">
             <section id="start-title">
                 <pre id="pre-title">WELCOME   TO</pre>
                 <h1>RETRO - BOMBER</h1>
-                <p class="normal-text">-- Choose your bomber and press START --</p>
+                <p class="normal-text" id="choose-to-start">-- Choose your favorite plane and press START --</p>
             </section>
 
             <section id="choose-section">
                 <div class="choose-bomber" id="choose-bomber1">
-                    <h2 id="bomber1-name"></h2>
+                    <h3 class="bomber-name" id="bomber1-name"></h3>
+
                     <img id="bomber1" class="bomber-image" src="img/bomber1.png" alt="bomber1" />
                     <img id="bullet1" class="bullet-image" src="img/bullet1.png" alt="bullet1" />
                     <img id="bomb1" class="bomb-image" src="img/bomb1.png" alt="bomb1" />
+
+                    <div class="statistics">
+                        <span>Max. Speed:</span>
+                        <progress id="bomber1-speed-value" value="" max="10"></progress>
+
+                        <span>Acceleration:</span>
+                        <progress id="bomber1-acceleration-value" value="" max="10"></progress>
+
+                        <span>Turn Agility:</span>
+                        <progress id="bomber1-agility-value" value="" max="10"></progress>
+
+                        <span>N. bombs:</span>
+                        <progress id="bomber1-num-bombs-value" value="" max="10"></progress>
+
+                        <span>Bomb dmg:</span>
+                        <progress id="bomber1-bomb-damage-value" value="" max="10"></progress>
+
+                        <span>Bullet dmg:</span>
+                        <progress id="bomber1-bullet-damage-value" value="" max="10"></progress>
+                    </div>
                 </div>
+
+
                 <div class="choose-bomber" id="choose-bomber2">
+                    <h3 class="bomber-name" id="bomber2-name"></h3>
                     <img id="bomber2" class="bomber-image" src="img/bomber2.png" alt="bomber2" />
                     <img id="bullet2" class="bullet-image" src="img/bullet2.png" alt="bullet2" />
                     <img id="bomb2" class="bomb-image" src="img/bomb2.png" alt="bomb2" />
+
+                    <div class="statistics">
+                        <span>Max. Speed:</span>
+                        <progress id="bomber2-speed-value" value="" max="10"></progress>
+
+                        <span>Acceleration:</span>
+                        <progress id="bomber2-acceleration-value" value="" max="10"></progress>
+
+                        <span>Turn Agility:</span>
+                        <progress id="bomber2-agility-value" value="" max="10"></progress>
+
+                        <span>N. bombs:</span>
+                        <progress id="bomber2-num-bombs-value" value="" max="10"></progress>
+
+                        <span>Bomb dmg:</span>
+                        <progress id="bomber2-bomb-damage-value" value="" max="10"></progress>
+
+                        <span>Bullet dmg:</span>
+                        <progress id="bomber2-bullet-damage-value" value="" max="10"></progress>
+                    </div>
                 </div>
+
                 <div class="choose-bomber" id="choose-bomber3">
+                    <h3 class="bomber-name" id="bomber3-name"></h3>
                     <img id="bomber3" class="bomber-image" src="img/bomber3.png" alt="bomber3" />
                     <img id="bullet3" class="bullet-image" src="img/bullet3.png" alt="bullet3" />
                     <img id="bomb3" class="bomb-image" src="img/bomb3.png" alt="bomb3" />
+                    <div class="statistics">
+                        <span>Max. Speed:</span>
+                        <progress id="bomber3-speed-value" value="" max="10"></progress>
+
+                        <span>Acceleration:</span>
+                        <progress id="bomber3-acceleration-value" value="" max="10"></progress>
+
+                        <span>Turn Agility:</span>
+                        <progress id="bomber3-agility-value" value="" max="10"></progress>
+
+                        <span>N. bombs:</span>
+                        <progress id="bomber3-num-bombs-value" value="" max="10"></progress>
+
+                        <span>Bomb dmg:</span>
+                        <progress id="bomber3-bomb-damage-value" value="" max="10"></progress>
+
+                        <span>Bullet dmg:</span>
+                        <progress id="bomber3-bullet-damage-value" value="" max="10"></progress>
+                    </div>
                 </div>
+            </section>
+
+            <section id="random-message">
+                <p class="normal-text">To play this game use the right key to accelerate, the left key to brake, the up key to put the airplane nose up and the down key to put the airplane nose down. Use space to shoot and "B" key to throw bombs.</p>
             </section>
 
             <section>
                 <button id="start-game">Start game</button>
             </section>
 
-            <section>
-                <p id="random-message" class="normal-text"></p>
-            </section>
-
             <section id="error-message">
-                <p>You didn't select any bomber, please choose one and then click START</p>
+                <p>You didn't select any plane, please choose one and then click START</p>
             </section>
 
         </div>
+    </div>
 
-
-        <div id="upper">
-            <div class="board" id="score">SCORE: <span id="score-value"></span></div>
-            <div class="board" id="health">HEALTH:
-                <progress id="health-value" value="100" max="100"></progress>
-            </div>
-            <div class="board" id="lives">LIVES: <span id="lives-value"></span></div>
-            <div class="board" id="numOfBombs">N. BOMBS: <span id="numOfBombs-value"></span></div>
-        </div>
-
-        <canvas id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
 
 
     </div>
@@ -96,9 +163,6 @@
 
 
     <!--Scripts-->
-
-    <!-- Jquery JavaScript -->
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 
     <!-- Ionsound Javascript -->
     <script type="text/javascript" src="js/ion.sound.min.js"></script>

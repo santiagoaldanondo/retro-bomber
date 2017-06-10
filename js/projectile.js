@@ -11,7 +11,7 @@ function Projectile(x, y, width, height, direction, speed, damage, imageLive) {
     this.vx = this.speed * Math.cos(this.direction * Math.PI / 180);
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
-    this.ay = gravity;
+    this.ay = 0;
     this.damage = damage;
 }
 // Set the Projectile to inherit from Drawable

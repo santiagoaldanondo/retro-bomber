@@ -39,22 +39,25 @@ Use the following keys to play this game:
 * DONE: Create floor, walls and ceiling. ?? Maybe in the background object
 * DONE: Check collision of bombs and bullets with bomber.
 * DONE: Create score, health and number of lives, put it on the screen and update it.
-* NO: Create a small canvas to show the current viewport position in the whole map.
-* NO: Refactorize classes, inheritance and methods. Maybe use functional programming.
 * DONE: Create models for different bombers, bases, bombs and bullets.
 * DONE: Create an html page to choose the models.
-* Create levels with different backgrounds and modify methods to make it more difficult.
+* DONE: Create levels with different backgrounds and modify methods to make it more difficult.
 * DONE: Add sounds.
 * DONE: Add transitions to collisions.
-* NO: Add gravity to Bomber.
-* DONE: Forbid going backwards or otherwise change the bullets and bombs' direction.
-* NO: Add friction and lift forces
-* Show the number of lives with a number of images instead of a number. 
-* NO: Change the css of the board.
 * DONE: Use browser localStorage to save information.
-* Create a bonus object that gives random prizes to the player.
 * DONE: Create a new property image for bombers and toggle the imageAlive and imageDead. Check sizes for the planes due to different widths and heights.
-* Prevent bombs from being accidentaly thrown in a row 
+* DONE: Prevent bombs from being accidentaly thrown in a row 
+* DONE: Forbid going backwards or otherwise change the bullets and bombs' direction.
+* DONE: Change the document.ready from JQuery to window.onload from Javascript. Remove JQuery library from the project.
+* DONE: Remove gravity from bullets. Only bombs will be affected by gravity. 
+* NO: Create a small canvas to show the current viewport position in the whole map.
+* NO: Refactorize classes, inheritance and methods. Maybe use functional programming.
+* NO: Add gravity to Bomber.
+* NO: Add friction and lift forces
+* NO: Change the css of the board.
+* Show the number of lives with a number of images instead of a number. 
+* Create a bonus object that gives random prizes to the player.
+* Create more random messages to toggle them in the start screen.
 
 ## Fixed bugs
 

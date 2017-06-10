@@ -11,7 +11,7 @@ function Bullet1(x, y, width, height, direction) {
     this.vx = this.speed * Math.cos(this.direction * Math.PI / 180);
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
-    this.ay = gravity;
+    this.ay = 0;
     this.damage = 5;
 }
 
@@ -29,8 +29,8 @@ function Bullet2(x, y, width, height, direction) {
     this.vx = this.speed * Math.cos(this.direction * Math.PI / 180);
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
-    this.ay = gravity;
-    this.damage = 5;
+    this.ay = 0;
+    this.damage = 15;
 }
 
 // Set the Bullet2 to inherit from Bullet
@@ -47,8 +47,8 @@ function Bullet3(x, y, width, height, direction) {
     this.vx = this.speed * Math.cos(this.direction * Math.PI / 180);
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
-    this.ay = gravity;
-    this.damage = 5;
+    this.ay = 0;
+    this.damage = 10;
 }
 
 // Set the Bullet4 to inherit from Bullet
@@ -61,11 +61,11 @@ function Missile1(x, y, width, height, direction) {
     this.height = height;
     this.imageLive = document.getElementById("missile1");
     this.direction = direction;
-    this.speed = 500;
+    this.speed = 200;
     this.vx = this.speed * Math.cos(this.direction * Math.PI / 180);
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
-    this.ay = gravity;
+    this.ay = 0;
     this.damage = 5;
 }
 

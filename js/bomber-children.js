@@ -12,9 +12,9 @@ function Bomber1() {
     this.currentImage = this.imageLive;
     this.width = 80;
     this.height = this.width * this.currentImage.naturalHeight / this.currentImage.naturalWidth;
-    this.acceleration = 600;
+    this.acceleration = 400;
     this.maxSpeed = 600;
-    this.agility = 6;
+    this.agility = 5;
     this.direction = 0;
     this.speed = 0;
     this.vx = 0;
@@ -30,11 +30,11 @@ function Bomber1() {
     this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
-    this.numOfBombs = 100;
+    this.numOfBombs = 10;
     this.maxBombs = this.numOfBombs;
     this.bombType = Bomb1;
     this.bulletType = Bullet1;
-    this.name = "Crazy bomber"
+    this.name = "Crazy Bomber"
 }
 
 // Set the Bomber1 to inherit from Bomber
@@ -51,9 +51,9 @@ function Bomber2() {
     this.currentImage = this.imageLive;
     this.width = 80;
     this.height = this.width * this.currentImage.naturalHeight / this.currentImage.naturalWidth;
-    this.acceleration = 800;
-    this.maxSpeed = 400;
-    this.agility = 9;
+    this.acceleration = 700;
+    this.maxSpeed = 800;
+    this.agility = 6;
     this.direction = 0;
     this.speed = 0;
     this.vx = 0;
@@ -69,11 +69,11 @@ function Bomber2() {
     this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
-    this.numOfBombs = 100;
+    this.numOfBombs = 3;
     this.maxBombs = this.numOfBombs;
     this.bombType = Bomb2;
     this.bulletType = Bullet2;
-    this.name = "Angry fighter";
+    this.name = "Angry Fighter";
 }
 
 // Set the Bomber2 to inherit from Bomber
@@ -92,7 +92,7 @@ function Bomber3() {
     this.height = this.width * this.currentImage.naturalHeight / this.currentImage.naturalWidth;
     this.acceleration = 800;
     this.maxSpeed = 400;
-    this.agility = 9;
+    this.agility = 10;
     this.direction = 0;
     this.speed = 0;
     this.vx = 0;
@@ -108,11 +108,11 @@ function Bomber3() {
     this.maxScore = 0;
     this.bombs = [];
     this.bullets = [];
-    this.numOfBombs = 100;
+    this.numOfBombs = 4;
     this.maxBombs = this.numOfBombs;
     this.bombType = Bomb3;
     this.bulletType = Bullet3;
-    this.name = "Acrobat rider";
+    this.name = "Deadly Acrobat";
 }
 
 // Set the Bomber3 to inherit from Bomber

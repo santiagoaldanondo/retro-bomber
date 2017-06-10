@@ -65,7 +65,7 @@ window.onkeyup = function(e) {
 
 
 // When document is ready
-$(document).ready(function() {
+window.onload = function() {
 
     // Check the values of the keyMap array. It will be called inside the render function.
     // Calling it inside the onkeydown or onkeyup generated some bugs when pressing multiple keys
@@ -125,7 +125,7 @@ $(document).ready(function() {
             base.draw();
             base.bombs.forEach(function(bomb, bombKey) {
                 if (isOutOfBorders(bomb)) {
-                    bomb.collide(base, undefined);
+                    bomb.collide();
                     bomb = null;
                     base.bombs.splice(bombKey, 1);
                 } else {
@@ -134,7 +134,7 @@ $(document).ready(function() {
             }, this);
             base.bullets.forEach(function(bullet, bulletKey) {
                 if (isOutOfBorders(bullet)) {
-                    bullet.collide(base, undefined);
+                    bullet.collide();
                     bullet = null;
                     base.bullets.splice(bulletKey, 1);
                 } else {
@@ -234,7 +234,7 @@ $(document).ready(function() {
                         // Play sound
                         ion.sound.play("bomb-explode");
 
-                        player.collide(bomb, base);
+                        player.collide(bomb);
                         explosions.unshift(new Explosion(bomb.x,
                             bomb.y,
                             0.5 * bomb.width,
@@ -249,7 +249,7 @@ $(document).ready(function() {
                 }, this);
                 base.bullets.forEach(function(bullet, bulletKey) {
                     if (detectCollision(player, bullet)) {
-                        player.collide(bullet, base);
+                        player.collide(bullet);
                         explosions.unshift(new Explosion(bullet.x,
                             bullet.y,
                             0.5 * bullet.width,
@@ -268,11 +268,12 @@ $(document).ready(function() {
     // Updates the boards with the players information
     function updateBoards(player) {
         document.getElementById("score-value").innerHTML = player.score;
+        document.getElementById("max-score-value").innerHTML = player.maxScore;
         document.getElementById("health-value").value = player.health;
         document.getElementById("health-value").max = player.maxHealth;
         document.getElementById("health-value").style.width = player.maxHealth + "px";
         document.getElementById("lives-value").innerHTML = player.numOfLives;
-        document.getElementById("numOfBombs-value").innerHTML = player.numOfBombs;
+        document.getElementById("num-of-bombs-value").innerHTML = player.numOfBombs;
     }
 
     // Checks if all enemies are dead
@@ -322,10 +323,14 @@ $(document).ready(function() {
         // Deletes players and level
         players = [];
         level = {};
+        levelNumber = 0;
 
         // Hide and show elements
         document.getElementById("canvas").style.display = "none";
-        document.getElementById("upper").style.display = "none";
+        [].forEach.call(document.getElementsByClassName("board"), function(element) {
+            element.style.display = "none";
+        }, this);
+        document.querySelector(".board:first-of-type").style.display = "block";
         document.getElementById("start-screen").style.display = "block";
 
         // Remove selected class from the previous selected bomber
@@ -428,7 +433,43 @@ $(document).ready(function() {
     // Get the attributes from the bombers to print them in the start screen
     function printToStartScreen() {
 
+        // First set the max score from the value saved in local storage
+        if (localStorage.maxScore) {
+            document.getElementById("max-score-value").innerHTML = parseInt(localStorage.maxScore);
+        }
+
+        // Instantiate classes to get their properties
+        var bomber1 = new Bomber1();
+        var bomber2 = new Bomber2();
+        var bomber3 = new Bomber3();
+
+        // Give name and values to the properties that will be shown in the start screen
+        document.getElementById("bomber1-name").innerHTML = bomber1.name;
+        document.getElementById("bomber1-speed-value").value = bomber1.maxSpeed / 100;
+        document.getElementById("bomber1-acceleration-value").value = bomber1.acceleration / 100;
+        document.getElementById("bomber1-agility-value").value = bomber1.agility;
+        document.getElementById("bomber1-num-bombs-value").value = bomber1.maxBombs;
+        document.getElementById("bomber1-bomb-damage-value").value = new bomber1.bombType().damage / 20;
+        document.getElementById("bomber1-bullet-damage-value").value = new bomber1.bulletType().damage / 2;
+
+        document.getElementById("bomber2-name").innerHTML = bomber2.name;
+        document.getElementById("bomber2-speed-value").value = bomber2.maxSpeed / 100;
+        document.getElementById("bomber2-acceleration-value").value = bomber2.acceleration / 100;
+        document.getElementById("bomber2-agility-value").value = bomber2.agility;
+        document.getElementById("bomber2-num-bombs-value").value = bomber2.maxBombs;
+        document.getElementById("bomber2-bomb-damage-value").value = new bomber2.bombType().damage / 20;
+        document.getElementById("bomber2-bullet-damage-value").value = new bomber2.bulletType().damage / 2;
+
+        document.getElementById("bomber3-name").innerHTML = bomber3.name;
+        document.getElementById("bomber3-speed-value").value = bomber3.maxSpeed / 100;
+        document.getElementById("bomber3-acceleration-value").value = bomber3.acceleration / 100;
+        document.getElementById("bomber3-agility-value").value = bomber3.agility;
+        document.getElementById("bomber3-num-bombs-value").value = bomber3.maxBombs;
+        document.getElementById("bomber3-bomb-damage-value").value = new bomber3.bombType().damage / 20;
+        document.getElementById("bomber3-bullet-damage-value").value = new bomber3.bulletType().damage / 2;
     }
+
+    printToStartScreen();
 
 
     // Chooses a player in the start-screen
@@ -441,6 +482,9 @@ $(document).ready(function() {
 
         // Add the selected class to the chosen bomber
         document.getElementById("choose-bomber1").classList.add("selected");
+
+        // Hide the error message
+        document.getElementById("error-message").style.display = "none";
 
         // Set players[0] to the chosen bomber class
         players[0] = new Bomber1();
@@ -458,6 +502,9 @@ $(document).ready(function() {
 
         // Set players[0] to the chosen bomber class
         players[0] = new Bomber2();
+
+        // Hide the error message
+        document.getElementById("error-message").style.display = "none";
     };
 
     document.getElementById("choose-bomber3").onclick = function() {
@@ -472,6 +519,9 @@ $(document).ready(function() {
 
         // Set players[0] to the chosen bomber class
         players[0] = new Bomber3();
+
+        // Hide the error message
+        document.getElementById("error-message").style.display = "none";
     };
 
     // Start game if click on start game and there is a selected player
@@ -480,7 +530,9 @@ $(document).ready(function() {
 
             // Hide and show elements
             document.getElementById("canvas").style.display = "block";
-            document.getElementById("upper").style.display = "block";
+            [].forEach.call(document.getElementsByClassName("board"), function(element) {
+                element.style.display = "block";
+            }, this);
             document.getElementById("start-screen").style.display = "none";
             document.getElementById("error-message").style.display = "none";
 
@@ -494,4 +546,4 @@ $(document).ready(function() {
             document.getElementById("error-message").style.display = "block";
         }
     };
-});
+};

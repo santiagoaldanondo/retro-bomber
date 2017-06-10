@@ -12,7 +12,7 @@ function Bomb1(x, y, width, height, direction, speed) {
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
-    this.damage = 100;
+    this.damage = 150;
 }
 
 // Set the Bomb1 to inherit from Bomb
@@ -30,7 +30,7 @@ function Bomb2(x, y, width, height, direction, speed) {
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
-    this.damage = 100;
+    this.damage = 200;
 }
 
 // Set the Bomb2 to inherit from Bomb
@@ -48,7 +48,7 @@ function Bomb3(x, y, width, height, direction, speed) {
     this.vy = this.speed * Math.sin(this.direction * Math.PI / 180);
     this.ax = 0;
     this.ay = gravity;
-    this.damage = 100;
+    this.damage = 120;
 }
 
 // Set the Bomb3 to inherit from Bomb

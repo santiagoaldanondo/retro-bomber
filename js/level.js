@@ -18,13 +18,13 @@ Level.prototype.constructor = Level;
 Level.prototype.start = function() {
 
     // populates the bases depending on the level
-    this.bases.push(new Base(400, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    this.bases.push(new Base(600, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    this.bases.push(new Base(800, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    this.bases.push(new Base(1000, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    this.bases.push(new Base(1200, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    this.bases.push(new Base(1400, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
-    this.bases.push(new Base(1600, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.1));
+    this.bases.push(new Base(400, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
+    this.bases.push(new Base(600, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
+    this.bases.push(new Base(800, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
+    this.bases.push(new Base(1000, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
+    this.bases.push(new Base(1200, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
+    this.bases.push(new Base(1400, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
+    this.bases.push(new Base(1600, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.01, 100, 100));
 }
 
 // save maxLevel to local storage
