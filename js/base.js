@@ -2,7 +2,7 @@
 /*global Drawable Bullet Missile1 players ctx viewX viewY ion:true*/
 
 // Create the class Base, that will inherit from the class Drawable
-function Base(x, y, width, height, image, shootingPace, health, worth, accuracy) {
+function Base(x, y, width, height, image, dead, shootingPace, health, worth, accuracy, rotationSpeed) {
     Drawable.call(this, x, y);
     this.width = width;
     this.height = height;
@@ -11,13 +11,14 @@ function Base(x, y, width, height, image, shootingPace, health, worth, accuracy)
     this.bombs = [];
     this.bullets = [];
     this.direction = 0;
-    this.dead = document.getElementById("base1-dead");
+    this.dead = dead;
     this.alive = true;
     this.damage = 10000;
     this.health = health;
     this.worth = worth;
     this.bulletType = Missile1;
     this.accuracy = accuracy;
+    this.rotationSpeed = rotationSpeed;
 }
 
 // Set the Base to inherit from Drawable
@@ -28,6 +29,9 @@ Base.prototype.constructor = Base;
 // IMPORTANT: REMEMBER THAT THE DIRECTION TAKES WEIRD VALUES. IT GOES FROM ZERO CLOCKWISE INSTEAD
 // OF ANTICLOCKWISE. THEREFORE 90 DEGREES AND 270 DEGREES ARE CONFUSED (90 IS THE USUAL 270 AND VS)
 Base.prototype.draw = function() {
+
+    // Rotates the enemy
+    this.rotate();
 
     // Calculates de vector of the Base's direction
     var xdx = Math.cos(this.direction * Math.PI / 180);
@@ -71,8 +75,8 @@ Base.prototype.shootBullet = function() {
 
     this.bullets.push(new this.bulletType(this.x,
         this.y,
-        this.width / 4,
-        this.height / 10,
+        this.width / 3,
+        this.height / 8,
         finalDirection,
         500));
 }
@@ -90,4 +94,13 @@ Base.prototype.collide = function(collidedWith, originCollision) {
             originCollision.score += this.worth;
         }
     }
+}
+
+Base.prototype.rotate = function() {
+    if (this.alive) {
+        this.direction += this.rotationSpeed;
+    }
+
+    // Set direction between 0 and 360 degrees (360 is not included)
+    this.direction = (this.direction + 360) % 360;
 }

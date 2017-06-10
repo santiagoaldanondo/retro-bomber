@@ -19,7 +19,11 @@ body {
 #bomb-explosion,
 #bullet-explosion,
 #base1,
+#base2,
+#base3,
 #base1-dead,
+#base2-dead,
+#base3-dead,
 #missile1 {
     display: none;
 }
@@ -85,9 +89,6 @@ h1 {
     font-size: 16px;
     margin: 5px auto;
     color: #234;
-}
-
-#choose-to-start {
     animation-name: blink;
     animation-duration: 2s;
     animation-timing-function: linear;
@@ -129,8 +130,8 @@ section {
 
 .choose-bomber {
     display: inline-block;
-    width: 200px;
-    height: 200px;
+    width: 220px;
+    min-height: 220px;
     margin: 10px 15px;
     background-color: #F0E68C;
     border: 2px solid #D2691E;
@@ -139,7 +140,7 @@ section {
 }
 
 .bomber-name {
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 20px;
     font-weight: bold;
     color: #8B4513;
@@ -173,13 +174,13 @@ section {
 
 #start-game {
     font-family: 'Permanent Marker', cursive;
-    font-size: 20px;
+    font-size: 22px;
     padding: 5px 10px;
-    background-color: #daa520;
+    background-color: #F0E68C;
     color: #228B22;
-    border: 1px solid #32CD32;
+    border: 2px solid #32CD32;
     border-radius: 5px;
-    box-shadow: 1px 1px #228B22;
+    box-shadow: 2px 2px #228B22;
     margin: 10px auto 5px auto;
 }
 

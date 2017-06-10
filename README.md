@@ -2,7 +2,11 @@
 
 ## Introduction
 
-Retro bomber is a 2D game built with Javascript and Jquery. It uses a canvas to draw the bomber that the player will use to destroy all the enemies in the battlefield.
+Retro bomber is a 2D game built with HTML5, CSS3 and Javascript (ECMAScript 5. It uses a canvas to draw the bomber that the player will use to destroy all the enemies in the battlefield. There is a start view to choose your plane and then you can play throug levels as far as you can.
+
+__PLAY IT ONLINE ON MY GITHUB PAGES:__
+
+(https://santiagoaldanondo.github.io/)
 
 ## Main functionalities implemented
 
@@ -50,6 +54,7 @@ Use the following keys to play this game:
 * DONE: Forbid going backwards or otherwise change the bullets and bombs' direction.
 * DONE: Change the document.ready from JQuery to window.onload from Javascript. Remove JQuery library from the project.
 * DONE: Remove gravity from bullets. Only bombs will be affected by gravity. 
+* DONE: Create more random messages to toggle them in the start screen.
 * NO: Create a small canvas to show the current viewport position in the whole map.
 * NO: Refactorize classes, inheritance and methods. Maybe use functional programming.
 * NO: Add gravity to Bomber.
@@ -57,7 +62,6 @@ Use the following keys to play this game:
 * NO: Change the css of the board.
 * Show the number of lives with a number of images instead of a number. 
 * Create a bonus object that gives random prizes to the player.
-* Create more random messages to toggle them in the start screen.
 
 ## Fixed bugs
 

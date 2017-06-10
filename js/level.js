@@ -28,21 +28,27 @@ Level.prototype.start = function() {
     // populates the bases depending on the level
     for (var i = 0; i < basesPerLevel; i++) {
 
+        // Gets a random number for the image
+        var imageNumber = Math.floor(Math.random() * 3) + 1;
+
         // Sets properties for each base, dependant on the level
         var baseShootingPace = Math.floor(Math.random() * 100) / 10000 + this.levelNumber * 0.01;
         var baseHealth = 50 + Math.floor(Math.random() * 30) + this.levelNumber * 40;
         var baseWorth = 50 + Math.floor(Math.random() * 30) + this.levelNumber * 40;
         var baseAccuracy = Math.floor(Math.random() * 100) / 10000 + this.levelNumber * 0.01;
+        var baseRotationSpeed = Math.random() * 2;
 
         this.bases[i] = new Base(Math.random() * (this.worldWidth - 80) + 40,
             Math.random() * (this.worldHeight - 40) + 20,
             100,
             100,
-            document.getElementById("base1"),
+            document.getElementById("base" + imageNumber),
+            document.getElementById("base" + imageNumber + "-dead"),
             baseShootingPace,
             baseHealth,
             baseWorth,
-            baseAccuracy);
+            baseAccuracy,
+            baseRotationSpeed);
     }
 }
 

@@ -3,12 +3,22 @@
 
 // CREATE GLOBAL VARIABLES
 
+// Declare an array with all the random messages that can be shown:
+var randomMessages = [
+    "Use right key to accelerate, left key to brake, up key to put the airplane nose up and down key to put the nose down, space to shoot and B key to throw bombs.",
+    "The game will become more difficult in higher levels. Enemies will have more life points, they will shoot more frequently, with more accuracy and there will be more of them!!",
+    "The number of bombs will top up to the initial value after losing one life or getting to the next level.",
+    "If you crash against an enemy, he will get killed but you will also lose a life"
+]
+
 // Declares the level (will be an instance of the class Level) and the levelNumber
 var level;
 var levelNumber = 0;
 
-// Declares the variable gameInterval in order to be able to clear it when you finish a level
+// Declares the intervals in order to be able to clear them when you need to
 var gameInterval;
+var messageInterval;
+var message = 0;
 
 // canvas variables
 var canvas, ctx;
@@ -269,9 +279,9 @@ window.onload = function() {
     function updateBoards(player) {
         document.getElementById("score-value").innerHTML = player.score;
         document.getElementById("max-score-value").innerHTML = player.maxScore;
-        document.getElementById("health-value").value = player.health;
-        document.getElementById("health-value").max = player.maxHealth;
-        document.getElementById("health-value").style.width = player.maxHealth + "px";
+        document.getElementById("health-value").value = player.health / 2;
+        document.getElementById("health-value").max = player.maxHealth / 2;
+        document.getElementById("health-value").style.width = player.maxHealth / 2 + "px";
         document.getElementById("lives-value").innerHTML = player.numOfLives;
         document.getElementById("num-of-bombs-value").innerHTML = player.numOfBombs;
     }
@@ -290,7 +300,7 @@ window.onload = function() {
     // Message printed when player loses one life
     function lostLifeMessage() {
         ctx.fillStyle = "darkred";
-        ctx.font = "bolder " + 0.05 * canvas.width + "px Indie Flower";
+        ctx.font = 0.05 * canvas.width + "px Permanent Marker";
         ctx.textAlign = "center";
         ctx.fillText("You lost one life", 0.5 * canvas.width, 0.4 * canvas.height);
         ctx.fillText("Press enter to continue", 0.5 * canvas.width, 0.6 * canvas.height);
@@ -299,7 +309,7 @@ window.onload = function() {
     // Message printed when player runs out of lives
     function gameOverMessage() {
         ctx.fillStyle = "darkred";
-        ctx.font = "bolder " + 0.05 * canvas.width + "px Indie Flower";
+        ctx.font = 0.05 * canvas.width + "px Permanent Marker";
         ctx.textAlign = "center";
         ctx.fillText("You lost all your lives", 0.5 * canvas.width, 0.4 * canvas.height);
         ctx.fillText("Press enter to start over", 0.5 * canvas.width, 0.6 * canvas.height);
@@ -308,7 +318,7 @@ window.onload = function() {
     // Message printed when player runs out of lives
     function levelFinishedMessage() {
         ctx.fillStyle = "darkblue";
-        ctx.font = "bolder " + 0.05 * canvas.width + "px Indie Flower";
+        ctx.font = 0.05 * canvas.width + "px Permanent Marker";
         ctx.textAlign = "center";
         ctx.fillText("You finished this level", 0.5 * canvas.width, 0.4 * canvas.height);
         ctx.fillText("Press enter to start next level", 0.5 * canvas.width, 0.6 * canvas.height);
@@ -442,6 +452,16 @@ window.onload = function() {
         }
     }
 
+    function printRandomMessages() {
+        var lastMessage = message;
+        while (lastMessage === message) {
+            message = Math.floor(Math.random() * randomMessages.length);
+        }
+        document.getElementById("random-message").innerHTML = randomMessages[message];
+    }
+
+    messageInterval = window.setInterval(printRandomMessages, 5000)
+
     // Get the attributes from the bombers to print them in the start screen
     function printToStartScreen() {
 
@@ -539,6 +559,9 @@ window.onload = function() {
     // Start game if click on start game and there is a selected player
     document.getElementById("start-game").onclick = function() {
         if (players[0] !== undefined) {
+
+            // Clear messages interval
+            clearInterval(messageInterval);
 
             // Hide and show elements
             document.getElementById("canvas").style.display = "block";
