@@ -47,6 +47,7 @@ body {
 
 .board {
     display: none;
+    font-weight: bold;
 }
 
 #canvas {
@@ -61,7 +62,6 @@ body {
 
 #max-score {
     float: right;
-    font-weight: bold;
 }
 
 

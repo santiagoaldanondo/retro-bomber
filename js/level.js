@@ -5,9 +5,14 @@
 function Level(levelNumber) {
     this.levelNumber = levelNumber;
     this.maxLevel = 0;
-    this.backgroundImage = new Background(0, 0, document.getElementById("backgroundImage" + this.levelNumber));
-    this.worldWidth = document.getElementById("backgroundImage" + this.levelNumber).naturalWidth;
-    this.worldHeight = document.getElementById("backgroundImage" + this.levelNumber).naturalHeight;
+    if (this.levelNumber < 7) {
+        this.levelImage = this.levelNumber;
+    } else {
+        this.levelImage = Math.floor(Math.random() * 6 + 1);
+    }
+    this.backgroundImage = new Background(0, 0, document.getElementById("backgroundImage" + this.levelImage));
+    this.worldWidth = document.getElementById("backgroundImage" + this.levelImage).naturalWidth;
+    this.worldHeight = document.getElementById("backgroundImage" + this.levelImage).naturalHeight;
     this.bases = [];
 }
 
@@ -17,14 +22,28 @@ Level.prototype.constructor = Level;
 // Create new methods for the Level class
 Level.prototype.start = function() {
 
+    // Sets the number of bases for the level
+    var basesPerLevel = 2 + Math.floor(Math.random() * 2) + this.levelNumber;
+
     // populates the bases depending on the level
-    this.bases.push(new Base(400, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 0));
-    this.bases.push(new Base(600, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 0.1));
-    this.bases.push(new Base(800, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 0.3));
-    this.bases.push(new Base(1000, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 0.4));
-    this.bases.push(new Base(1200, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 0.5));
-    this.bases.push(new Base(1400, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 0.6));
-    this.bases.push(new Base(1600, this.worldHeight - 100, 100, 100, document.getElementById("base1"), 0.5, 100, 100, 1));
+    for (var i = 0; i < basesPerLevel; i++) {
+
+        // Sets properties for each base, dependant on the level
+        var baseShootingPace = Math.floor(Math.random() * 100) / 10000 + this.levelNumber * 0.01;
+        var baseHealth = 50 + Math.floor(Math.random() * 30) + this.levelNumber * 40;
+        var baseWorth = 50 + Math.floor(Math.random() * 30) + this.levelNumber * 40;
+        var baseAccuracy = Math.floor(Math.random() * 100) / 10000 + this.levelNumber * 0.01;
+
+        this.bases[i] = new Base(Math.random() * (this.worldWidth - 80) + 40,
+            Math.random() * (this.worldHeight - 40) + 20,
+            100,
+            100,
+            document.getElementById("base1"),
+            baseShootingPace,
+            baseHealth,
+            baseWorth,
+            baseAccuracy);
+    }
 }
 
 // save maxLevel to local storage
